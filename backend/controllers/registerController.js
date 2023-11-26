@@ -20,7 +20,3 @@ exports.addUser = async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
-
-exports.verifyEmailCode = async(req,res)=>{
-    // const code = 
-}
