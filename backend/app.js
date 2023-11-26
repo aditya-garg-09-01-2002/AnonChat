@@ -11,7 +11,7 @@ app.use(express.json())
 
 app.use('/login',loginRoutes);
 app.use('/register',registerRoutes);
-app.use('/send-otp',otpRoutes);
+app.use('/otp',otpRoutes);
 
 const PORT = process.env.PORT || 3000;
 
