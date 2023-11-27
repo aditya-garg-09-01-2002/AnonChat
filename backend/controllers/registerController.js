@@ -13,10 +13,16 @@ exports.addUser = async (req, res) => {
         'INSERT INTO user (UserID, Password, Name) VALUES (?, ?, ?)',
         [UserID, hashedPassword, UserName]
         );
-
         res.json({ success: true, userId: results.insertId });
     } catch (error) {
-        console.error('Error inserting user:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        if(error.errno==1062)
+        {
+            res.status(500).json({success:false,error:'User Already Exists'});
+        }
+        // console.error('Error inserting user:', error);
+        else
+        {
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
     }
 };
