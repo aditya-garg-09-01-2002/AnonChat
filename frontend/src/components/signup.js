@@ -37,12 +37,8 @@ export default function Login() {
           body:JSON.stringify({UserID:userID}),
         });
         const data = await response.json();
-
-        console.log(data);
-        console.log(response);
         if (response.ok) {
           updateRegistrationStatus(1)
-          console.log('verification code is sent to your email');
         } else {
           // Failed login, display error message
           console.error('Mailing:', data.message);
@@ -78,13 +74,12 @@ export default function Login() {
             body: JSON.stringify({ UserID: userID, UserPassword:userPassword, UserName:userName}),
           });
           const data2 = await response2.json();
-          console.log(data);
           if(response2.ok)
           {
             console.log("added User");
           }
           else{
-            console.error("User Registration failed: ", data2.message);
+            console.error("User Registration failed: ", data2.error);
           }
         } else {
           // Failed login, display error message
@@ -149,6 +144,7 @@ export default function Login() {
                   autoComplete="email"
                   required
                   value={userID}
+                  disabled={registrationButton==0?false:true}
                   onChange={handleEmailChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
