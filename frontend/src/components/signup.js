@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 export default function Login() {
+
+  const navigate=useNavigate();
   const [userName,setName] =useState("");
   const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
@@ -76,6 +78,7 @@ export default function Login() {
           const data2 = await response2.json();
           if(response2.ok)
           {
+            navigate('/');
             console.log("added User");
           }
           else{
