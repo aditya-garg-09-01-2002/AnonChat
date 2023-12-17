@@ -9,7 +9,6 @@
     "google-auth-library": "^9.4.1",
     "googleapis": "^128.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.1",
     "mysql2": "^3.6.5",
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.1"
