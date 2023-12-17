@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom"
+import {Link , useNavigate} from "react-router-dom"
 
 export default function Login() {
+  const navigate=useNavigate();
   const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
   const [roomID, setRoomID] = useState("");
@@ -23,8 +24,9 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://192.168.29.195:9000/login', {
         method: 'POST',
+        credentials:'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,8 +39,10 @@ export default function Login() {
 
       // Handle authentication based on the server response
       if (response.ok) {
+        // console.log(data.user)
+        localStorage.setItem('UserID',data.user.UserID)
         // Successful login, handle accordingly (e.g., redirect to home page)
-        console.log('Login successful');
+        navigate('/home');
       } else {
         // Failed login, display error message
         console.error('Login failed:', data.message);
@@ -113,7 +117,7 @@ export default function Login() {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="roomID" className="block text-sm font-medium leading-6 text-gray-900">
                   Room ID
@@ -133,7 +137,7 @@ export default function Login() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
