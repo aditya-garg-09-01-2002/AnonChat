@@ -19,26 +19,32 @@ exports.sendOTP=async (req,res)=>{
             [UserID, hashedOTP]
         );
         
+        try{
+          const result = await transporter.sendMail({
+              from:"guufg57@gmail.com",
+              to: UserID,
+              subject: 'Email Verification OTP',
+              text: `Your OTP for email verification is: ${otp}`,
+          });
 
-        const result = await transporter.sendMail({
-            from:"guufg57@gmail.com",
-            to: UserID,
-            subject: 'Email Verification OTP',
-            text: `Your OTP for email verification is: ${otp}`,
-        });
+          // console.log(result);
 
-        // console.log(result);
-
-        if (result.accepted && result.accepted.length > 0) {
-            // Email sent successfully
-            res.json({
-                 'status': 'success', 
-                 'message': 'OTP sent successfully',
-                 'code':'sent',
-         });
-        } else {
-            // Email failed to send
-            res.status(500).json({ 'status': 'error', 'message': 'Failed to send OTP' });
+          if (result.accepted && result.accepted.length > 0) {
+              // Email sent successfully
+              res.json({
+                  'status': 'success', 
+                  'message': 'OTP sent successfully',
+                  'code':'sent',
+          });
+          } else {
+              // Email failed to send
+              res.status(500).json({ 'status': 'error', 'message': 'Failed to send OTP' });
+          }
+        }
+        catch(error)
+        {
+          console.log(error)
+          res.status(500).json({'status':'error','message':'Failed to send OTP'});
         }
     }
     catch (error) {
