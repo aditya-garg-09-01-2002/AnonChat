@@ -26,3 +26,27 @@ exports.addUser = async (req, res) => {
         }
     }
 };
+exports.checkUser=async(req,res)=>{
+    const {UserID}=req.body;
+    try {
+        const results = await dbUtils.query(
+        'Select name from User where UserID=?',
+        [UserID]
+        );
+        console.log(results);
+        if(results.length>0)
+            res.json({'message':'User Already Exists'})
+        else 
+            res.json({'message':'User Does Not Exists'})
+    } catch (error) {
+        if(error.errno==1062)
+        {
+            res.status(500).json({success:false,error:'User Already Exists'});
+        }
+        // console.error('Error inserting user:', error);
+        else
+        {
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+    }
+}
