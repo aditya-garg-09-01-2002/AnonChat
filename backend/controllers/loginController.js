@@ -1,10 +1,11 @@
 // controllers/userController.js
 const dbUtils = require('../utils/dbUtils');
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
+const jwtConfig=require('../config/jwt')
 // Controller function to get all users
 exports.validateLogin = async (req, res) => {
     const { UserID, UserPassword } = req.body;
-
   try {
     const rows = await dbUtils.query('SELECT * FROM user WHERE UserID = ?', [UserID]);
 
@@ -16,7 +17,18 @@ exports.validateLogin = async (req, res) => {
         
         if (isPasswordValid) {
             // Successful login
-            res.status(200).json({ message: 'Login Successful' });
+            const jwtToken=jwt.sign({User:UserID},jwtConfig.JWT_SECRET_KEY,{expiresIn:'1d',});
+            res.cookie('jwt',jwtToken,{
+              httpOnly:true,//maybe this
+              sameSite:'none',
+              maxAge: 24 * 60 * 60 * 1000,
+              // secure:true
+            });
+            req.session.user={
+              UserID:UserID,
+              jwtToken
+            }
+            res.status(200).json({ message: 'Login Successful' ,user:req.session.user});
       } else {
         // Invalid password
         res.status(401).json({ message: 'Invalid password' });
