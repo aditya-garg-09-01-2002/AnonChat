@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {Link,useNavigate} from "react-router-dom";
-export default function Login() {
+
+export default function SignUp() {
 
   const navigate=useNavigate();
   const [userName,setName] =useState("");
@@ -31,7 +32,27 @@ export default function Login() {
     if(registrationButton==0)
     {
       try{
-        const response = await fetch('http://localhost:3000/otp/send',{
+        const response = await fetch('http://192.168.29.195:9000/register/checkUser',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+          },
+          body:JSON.stringify({UserID:userID}), 
+        });
+        const data=await response.json();
+        if(data.message==='User Already Exists')
+        {
+          //display and move to login 
+          console.log(data)
+          return ;
+        }
+      }
+      catch(error)
+      {
+        console.log(error)
+      }
+      try{
+        const response = await fetch('http://192.168.29.195:9000/otp/send',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -52,7 +73,7 @@ export default function Login() {
     }
     else{
       try {
-        const response = await fetch('http://localhost:3000/otp/verify', {
+        const response = await fetch('http://192.168.29.195:9000/otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +89,7 @@ export default function Login() {
         if (response.ok) {
             // Successful login, handle accordingly (e.g., redirect to home page)
             console.log('OTP Verified');
-            const response2 = await fetch('http://localhost:3000/register', {
+            const response2 = await fetch('http://192.168.29.195:9000/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -80,21 +101,22 @@ export default function Login() {
           {
             navigate('/');
             console.log("added User");
+            setEmail("");
+            setName("");
+            setPassword("");
+            setOTP("");
           }
           else{
             console.error("User Registration failed: ", data2.error);
           }
         } else {
+          setOTP("");
           // Failed login, display error message
           console.error('OTP Verification failed:', data.message);
         }
       } catch (error) {
         console.error('Error during OTP Verification:', error.message);
       }
-      setEmail("");
-      setName("");
-      setPassword("");
-      setOTP("");
     }
   }
 
@@ -179,6 +201,11 @@ export default function Login() {
                 <label htmlFor="OTP" className="block text-sm font-medium leading-6 text-gray-900">
                   OTP
                 </label>
+                <div className="text-sm">
+                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    Resend OTP
+                  </a>
+                </div>
               </div>
               <div className="mt-2">
                 <input
