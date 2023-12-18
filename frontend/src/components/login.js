@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import {Link , useNavigate} from "react-router-dom"
+import MessagePop from "./messagePop";
+
 
 export default function Login() {
   const navigate=useNavigate();
@@ -41,6 +43,7 @@ export default function Login() {
       if (response.ok) {
         // console.log(data.user)
         localStorage.setItem('UserID',data.user.UserID)
+
         // Successful login, handle accordingly (e.g., redirect to home page)
         navigate('/home');
       } else {
@@ -156,6 +159,7 @@ export default function Login() {
             </Link>
           </p>
         </div>
+
       </div>
     </>
   );
