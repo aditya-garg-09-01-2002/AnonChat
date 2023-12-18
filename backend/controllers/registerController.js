@@ -49,4 +49,23 @@ exports.checkUser=async(req,res)=>{
             res.status(500).json({ success: false, error: 'Internal Server Error' });
         }
     }
+};
+exports.forgotPassword=async(req,res)=>{
+    const { UserID, UserPassword } = req.body;
+    // frontend must send a prop of body with all required attributes
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(UserPassword, 10);
+    try {
+        const results = await dbUtils.query(
+        'Update User set Password=? where UserID=?',
+        [hashedPassword, UserID ]
+        );
+        if(results.affectedRows===1)
+            res.json({ success: true });
+        else res.status(404).json({success:false,error:"User Does Not Exists"})
+    } catch (error) {
+            console.log(error)
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
 }
