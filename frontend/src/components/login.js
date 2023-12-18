@@ -7,7 +7,14 @@ export default function Login() {
   const navigate=useNavigate();
   const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
-  const [roomID, setRoomID] = useState("");
+  
+  function clearFields(){
+    setEmail("");
+    setPassword("");
+  };
+  
+  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields})
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -16,9 +23,6 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
-  const handleRoomIDChange=(e)=>{
-    setRoomID(e.target.value);
-  }
 
 
   const handleSubmit = async (e) => {
@@ -34,27 +38,27 @@ export default function Login() {
         },
         body: JSON.stringify({ UserID: userID, UserPassword: userPassword }),
       });
-
       const data = await response.json();
-
-      console.log(data);
 
       // Handle authentication based on the server response
       if (response.ok) {
-        // console.log(data.user)
         localStorage.setItem('UserID',data.user.UserID)
 
         // Successful login, handle accordingly (e.g., redirect to home page)
         navigate('/home');
-      } else {
-        // Failed login, display error message
-        console.error('Login failed:', data.message);
-      }
-    } catch (error) {
-      console.error('Error during login:', error.message);
+      } 
+      else if(response.status===404)
+        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Create New User",color:"gray",link:"signup"}]})
+
+      else if(response.status===401)
+        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Change Password",color:"gray",link:"reset"}]}) 
+      
+      else throw new Error(data.message)
+    } 
+    catch (error) {
+      setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
     }
     setEmail("");
-    setRoomID("");
     setPassword("");
   };
 
@@ -137,6 +141,8 @@ export default function Login() {
             </Link>
           </p>
         </div>
+
+        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields}/>
 
       </div>
     </>
