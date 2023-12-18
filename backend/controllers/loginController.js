@@ -5,17 +5,16 @@ const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
 // Controller function to get all users
 exports.validateLogin = async (req, res) => {
-    const { UserID, UserPassword } = req.body;
+  const { UserID, UserPassword } = req.body;
   try {
     const rows = await dbUtils.query('SELECT * FROM user WHERE UserID = ?', [UserID]);
-
     if (rows.length > 0) {
         const hashedPassword = rows[0].Password;
         
         // Compare the provided password with the hashed password in the database
         const isPasswordValid = await bcrypt.compare(UserPassword, hashedPassword);
-        
         if (isPasswordValid) {
+          console.log(isPasswordValid)
             // Successful login
             const jwtToken=jwt.sign({User:UserID},jwtConfig.JWT_SECRET_KEY,{expiresIn:'1d',});
             res.cookie('jwt',jwtToken,{
@@ -31,14 +30,13 @@ exports.validateLogin = async (req, res) => {
             res.status(200).json({ message: 'Login Successful' ,user:req.session.user});
       } else {
         // Invalid password
-        res.status(401).json({ message: 'Invalid password' });
+        res.status(401).json({ message: 'Invalid Password' });
       }
     } else {
       // User not found
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'User Not Found' });
     }
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal Server Error\nRetry Again Some Time Later' });
   }
 };
