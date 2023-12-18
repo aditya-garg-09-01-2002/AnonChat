@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {Link,useNavigate} from "react-router-dom";
+import MessagePop from "./messagePop";
 
 export default function SignUp() {
 
@@ -9,24 +10,60 @@ export default function SignUp() {
   const [userPassword, setPassword] = useState("");
   const [userOTP, setOTP] = useState("");
   const [registrationButton,updateRegistrationStatus]=useState(0);
+  const [resendOTPCount,updateCounter]=useState(30);
+  
+  useEffect(()=>{
+    const interval=setInterval(() => {
+      updateCounter(resendOTPCount => resendOTPCount - 1);
+    }, 1000);
+    return ()=>clearInterval(interval);
+  },[resendOTPCount])
+
+  
+  function clearFields(){
+    setName("");
+    setEmail("");
+    setPassword("");
+    setOTP("");
+  };
+  
+  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields})
+  
   // mode 0 - code is yet not sent
   // mode 1 - code is sent successfully
-  const handleNameChange= (e) => {
-    setName(e.target.value);
+  const handleNameChange= (e) => setName(e.target.value);
+  
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  
+  const handleOTPChange=(e)=> setOTP(e.target.value);
+  
+  const handleOTPCount=async (e)=>{
+    e.preventDefault()
+    updateCounter(30);
+    
+    try{
+      const response = await fetch('http://192.168.29.195:9000/otp/send',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({UserID:userID}),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        updateRegistrationStatus(1)
+      } else {
+        // Failed login, display error message
+        console.error('Mailing:', data.message);
+      }
+    }
+    catch (error) {
+      console.error('Error during Verification:', error.message);
+    }
+
   }
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleOTPChange=(e)=>{
-    setOTP(e.target.value);
-  }
-
   const verify = async (e) => {
     e.preventDefault();
     if(registrationButton==0)
@@ -43,7 +80,8 @@ export default function SignUp() {
         if(data.message==='User Already Exists')
         {
           //display and move to login 
-          console.log(data)
+          // navigate('/')
+          setShowModal({modalOpen:true,modalMessage:"User Already Exists",modalButtons:[{name:"Move to Login",color:"failure",link:".."},{name:"Create New User",color:"gray",link:"_close_"}]})
           return ;
         }
       }
@@ -100,11 +138,9 @@ export default function SignUp() {
           if(response2.ok)
           {
             navigate('/');
+
             console.log("added User");
-            setEmail("");
-            setName("");
-            setPassword("");
-            setOTP("");
+            clearFields()
           }
           else{
             console.error("User Registration failed: ", data2.error);
@@ -202,8 +238,19 @@ export default function SignUp() {
                   OTP
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Resend OTP
+                  <a 
+                    className='font-semibold text-indigo-600 hover:text-indigo-500'  
+                    onClick={handleOTPCount}
+                    style={
+                      { 
+                        pointerEvents: resendOTPCount > 0 ? 'none' : 'auto',
+                        color:resendOTPCount>0?'gray':'',
+                        opacity:resendOTPCount>0?'0.5':'',
+                        cursor:resendOTPCount>0?'not-allowed':'pointer',
+                      }
+                    }
+                  >
+                    Resend OTP {resendOTPCount>0 && `in ${resendOTPCount}s`}
                   </a>
                 </div>
               </div>
@@ -240,6 +287,8 @@ export default function SignUp() {
             </Link>
           </p>
         </div>
+        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields}/>
+
       </div>
     </>
   );
