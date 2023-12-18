@@ -100,9 +100,9 @@ export default function Login() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
-                  </a>
+                <Link to='/reset' className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  Forgot Password
+                </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -119,28 +119,6 @@ export default function Login() {
                 />
               </div>
             </div>
-
-            {/* <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="roomID" className="block text-sm font-medium leading-6 text-gray-900">
-                  Room ID
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="roomID"
-                  name="roomID"
-                  type="text"
-                  pattern="[A-Za-z0-9]{6}"
-                  maxLength="6"
-                  title="Enter a 6-digit alphanumeric value"
-                  required
-                  value={roomID}
-                  onChange={handleRoomIDChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div> */}
 
             <div>
               <button
