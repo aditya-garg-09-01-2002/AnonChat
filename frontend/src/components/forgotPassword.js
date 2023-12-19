@@ -40,24 +40,25 @@ export default function Forgot() {
     updateCounter(30);
     
     try{
-      const response = await fetch('http://192.168.29.195:9000/otp/send',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-        },
-        body:JSON.stringify({UserID:userID}),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        updateRegistrationStatus(1)
-      } else {
-        // Failed login, display error message
-        console.error('Mailing:', data.message);
+        const response = await fetch('http://192.168.29.195:9000/otp/send',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+          },
+          body:JSON.stringify({UserID:userID}),
+        });
+        const data = await response.json();
+        if (response.ok) { 
+          //otp is sent, we can proceed
+          updateRegistrationStatus(1)
+        } else {
+          // Failed login, display error message
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"N/A"}]})
+        }
       }
-    }
-    catch (error) {
-      console.error('Error during Verification:', error.message);
-    }
+      catch (error) {
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+      }
 
   }
   const verify = async (e) => {
