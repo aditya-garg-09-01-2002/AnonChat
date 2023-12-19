@@ -5,11 +5,16 @@ const dbConfig = require('../config/database');
 const pool = mysql.createPool(dbConfig);
 
 exports.query = async (sql, values) => {
-    const connection = await pool.getConnection();
     try {
+        const connection = await pool.getConnection();
         const [results] = await connection.query(sql, values);
         return results;
-    } finally {
+    }
+    catch(error)
+    {
+        throw new Error(error.message)
+    } 
+    finally {
         connection.release();
     }
 };
