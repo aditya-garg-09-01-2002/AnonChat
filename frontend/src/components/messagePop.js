@@ -47,9 +47,9 @@ export default function MessagePop({isOpen,message,buttons,clearFields}) {
                 <p key={index}>{line}</p>
               ))}
             </h3>
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-col items-center gap-4">
               {buttonsModal.map((button,index)=>(
-                <Button color={button.color} onClick={()=>handleClick(button)} key={index}>
+                <Button className="w-full" color={button.color} onClick={()=>handleClick(button)} key={index}>
                   {button.name}
                 </Button>            
               ))}
