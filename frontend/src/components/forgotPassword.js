@@ -74,16 +74,15 @@ export default function Forgot() {
           body:JSON.stringify({UserID:userID}), 
         });
         const data=await response.json();
-        console.log(typeof data.message)
         if(data.message==="User Does Not Exists")
         {
-          setShowModal({modalOpen:true,modalMessage:"User Does Not Exists",modalButtons:[{name:"Create New User",color:"failure",link:"/signup"}]})
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Create New User",color:"failure",link:"/signup"}]})
           return ;
         }
       }
       catch(error)
       {
-        console.log(error)
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
       }
       try{
         const response = await fetch('http://192.168.29.195:9000/otp/send',{
@@ -94,15 +93,16 @@ export default function Forgot() {
           body:JSON.stringify({UserID:userID}),
         });
         const data = await response.json();
-        if (response.ok) {
+        if (response.ok) { 
+          //otp is sent, we can proceed
           updateRegistrationStatus(1)
         } else {
           // Failed login, display error message
-          console.error('Mailing:', data.message);
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"N/A"}]})
         }
       }
       catch (error) {
-        console.error('Error during Verification:', error.message);
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
       }
     }
     else{
@@ -117,12 +117,9 @@ export default function Forgot() {
   
         const data = await response.json();
   
-        console.log(data);
-  
         // Handle authentication based on the server response
         if (response.ok) {
             // Successful login, handle accordingly (e.g., redirect to home page)
-            console.log('OTP Verified');
             const response2 = await fetch('http://192.168.29.195:9000/register/forgot', {
             method: 'POST',
             headers: {
@@ -137,15 +134,15 @@ export default function Forgot() {
             clearFields()
           }
           else{
-            console.error("User Password Change Failed: ", data2.error);
+            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Close",color:"failure",link:"N/A"}]})
           }
         } else {
           setOTP("");
           // Failed login, display error message
-          console.error('OTP Verification failed:', data.message);
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Close",color:"failure",link:"N/A"}]})
         }
       } catch (error) {
-        console.error('Error during OTP Verification:', error.message);
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
       }
     }
   }
