@@ -64,6 +64,27 @@ export default function Forgot() {
     e.preventDefault();
     if(registrationButton==0)
     {
+      try
+      {
+        const response = await fetch('http://192.168.29.195:9000/register/checkUser',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+          },
+          body:JSON.stringify({UserID:userID}), 
+        });
+        const data=await response.json();
+        console.log(typeof data.message)
+        if(data.message==="User Does Not Exists")
+        {
+          setShowModal({modalOpen:true,modalMessage:"User Does Not Exists",modalButtons:[{name:"Create New User",color:"failure",link:"/signup"}]})
+          return ;
+        }
+      }
+      catch(error)
+      {
+        console.log(error)
+      }
       try{
         const response = await fetch('http://192.168.29.195:9000/otp/send',{
           method:'POST',
@@ -240,6 +261,7 @@ export default function Forgot() {
             </Link>
           </p>
         </div>
+        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields}/>
       </div>
     </>
   );
