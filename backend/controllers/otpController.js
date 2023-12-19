@@ -18,7 +18,6 @@ exports.sendOTP=async (req,res)=>{
             'INSERT INTO emailVerification (UserID, otp) VALUES (?, ?)',
             [UserID, hashedOTP]
         );
-        
         try{
           const result = await transporter.sendMail({
               from:"guufg57@gmail.com",
@@ -27,11 +26,9 @@ exports.sendOTP=async (req,res)=>{
               text: `Your OTP for email verification is: ${otp}`,
           });
 
-          // console.log(result);
-
           if (result.accepted && result.accepted.length > 0) {
               // Email sent successfully
-              res.json({
+              res.status(201).json({
                   'status': 'success', 
                   'message': 'OTP sent successfully',
                   'code':'sent',
@@ -43,13 +40,11 @@ exports.sendOTP=async (req,res)=>{
         }
         catch(error)
         {
-          console.log(error)
           res.status(500).json({'status':'error','message':'Failed to send OTP'});
         }
     }
     catch (error) {
         // Handle any errors that occurred during sending the email
-        console.error('Error sending OTP email:', error.message);
         res.status(500).json({ 'status': 'error', 'message': 'Internal server error' });
     }
 }
@@ -72,10 +67,9 @@ exports.verifyOTP = async (req, res) => {
       }
     } else {
       // User not found
-      res.status(404).json({ message: 'Error Not Found' });
+      res.status(404).json({ message: 'OTP Verification Failure' });
     }
   } catch (error) {
-    console.error('Error during OTP Verification:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
