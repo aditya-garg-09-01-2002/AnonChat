@@ -131,15 +131,12 @@ export default function Forgot() {
           const data2 = await response2.json();
           if(response2.ok)
           {
-            navigate('/');
-            clearFields()
+            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Move to Login",color:"failure",link:"/"}]})
           }
           else{
             setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Close",color:"failure",link:"N/A"}]})
           }
         } else {
-          setOTP("");
-          // Failed login, display error message
           setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Close",color:"failure",link:"N/A"}]})
         }
       } catch (error) {
