@@ -5,7 +5,7 @@ const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
 
 exports.logout= (req, res) => {
-  res.clearCookie('AnonChatAuthenticator');
+  res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
 
   try {
     req.session.destroy((err) => {
