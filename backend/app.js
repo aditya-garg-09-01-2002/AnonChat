@@ -12,7 +12,7 @@ const cookieParser=require('cookie-parser');
 
 
 app.use(cors({
-    origin: ['http://localhost:3000',appConfig.FRONTEND_LINK],
+    origin: [appConfig.FRONTEND_LINK],
     credentials: true,
 }));
 
@@ -29,7 +29,7 @@ app.use(
 app.use(express.json())
 
 
-app.use('/login',loginRoutes);
+app.use('/log',loginRoutes);
 app.use('/register',registerRoutes);
 app.use('/otp',otpRoutes);
 
