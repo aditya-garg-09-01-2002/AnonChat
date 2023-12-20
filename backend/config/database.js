@@ -8,6 +8,10 @@ const dbConfig = {
     password: process.env.MYSQL_ADDON_PASSWORD,
     database: process.env.MYSQL_ADDON_DB,
     port:process.env.MYSQL_ADDON_PORT,
+    // host: process.env.host,
+    // user: process.env.user,
+    // password: process.env.password,
+    // database: process.env.database,
 };
 
 module.exports = dbConfig;
