@@ -1,15 +1,12 @@
 import { Button, Modal } from 'flowbite-react';
 import { useState,useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { HiOutlineEmojiHappy,HiOutlineEmojiSad,HiOutlineExclamationCircle } from 'react-icons/hi';
 
-export default function MessagePop({isOpen,message,buttons,clearFields}) {
-
+export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,status}) {
   const navigate=useNavigate();
   const [openModal, setOpenModal] = useState(isOpen);
   const [buttonsModal,setButtonsModal]=useState(buttons);
-  const [clearFieldFunction,setClearFunction]=useState(clearFields);
-
   const handleClick=(button)=>{
     if(button.link==="N/A")
     {
@@ -22,26 +19,24 @@ export default function MessagePop({isOpen,message,buttons,clearFields}) {
     }
     else navigate(button.link,{relative:"path"})
   }
-
+  function icon(){
+    switch(status)
+    {
+      case "sad" : return <HiOutlineEmojiSad className="mt-6 mx-auto mb-4 h-14 w-14 text-red-700 dark:text-red-500" />
+      case "happy" : return <HiOutlineEmojiHappy className="mt-6 mx-auto mb-4 h-14 w-14 text-green-400 dark:text-green-200" />
+      default : return <HiOutlineExclamationCircle className="mt-6 mx-auto mb-4 h-14 w-14 text-red-700 dark:text-red-500" />
+    }
+  }
   useEffect(() => {
     setOpenModal(isOpen);
     setButtonsModal(buttons);
-    // console.log(buttonsModal)
   }, [isOpen,buttons]);
   return (
     <>
-      <Modal 
-        show={openModal} 
-        size="sm" 
-        onClose={() => {
-          setOpenModal(false);
-          clearFields();
-        }}
-        popup>
-        <Modal.Header />
+      <Modal show={openModal} size="sm" popup>
         <Modal.Body>
           <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            {icon()}
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 {message.split('\n').map((line, index) => (
                 <p key={index}>{line}</p>
