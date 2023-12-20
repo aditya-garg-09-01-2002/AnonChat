@@ -8,7 +8,7 @@ exports.addUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(UserPassword, 10);
     try {
         const results = await dbUtils.query(
-        'INSERT INTO user (UserID, Password, Name) VALUES (?, ?, ?)',
+        'INSERT INTO user (UserID, Password, name) VALUES (?, ?, ?)',
         [UserID, hashedPassword, UserName]
         );
         if(results.affectedRows===1)
@@ -17,13 +17,13 @@ exports.addUser = async (req, res) => {
         if(error.errno==1062)
             res.status(400).json({success:false,message:'User Already Exists'});
         else
-            res.status(500).json({ success: false, message: 'Internal Server Error' });
+            res.status(500).json({ message: error.message });
     }
 };
 exports.checkUser=async(req,res)=>{
     const {UserID}=req.body;
     try {
-        const results = await dbUtils.query('Select name from User where UserID=?',[UserID]);
+        const results = await dbUtils.query('Select name from user where UserID=?',[UserID]);
         if(results.length>0)
             res.json({'message':'User Already Exists'})
         else 
@@ -32,7 +32,7 @@ exports.checkUser=async(req,res)=>{
         if(error.errno==1062)
             res.json({success:false,error:'User Already Exists'});
         else
-           res.status(500).json({ success: false, error: 'Internal Server Error' });
+            res.status(500).json({ message: error.message });
     }
 };
 exports.forgotPassword=async(req,res)=>{
@@ -40,7 +40,7 @@ exports.forgotPassword=async(req,res)=>{
   const hashedPassword = await bcrypt.hash(UserPassword, 10);
     try {
         const results = await dbUtils.query(
-        'Update User set Password=? where UserID=?',
+        'Update user set Password=? where UserID=?',
         [hashedPassword, UserID ]
         );
         if(results.affectedRows===1)

@@ -15,7 +15,7 @@ exports.sendOTP=async (req,res)=>{
             [UserID]
         );
         const insertNewOTP = await dbUtils.query(
-            'INSERT INTO emailVerification (UserID, otp) VALUES (?, ?)',
+            'INSERT INTO emailverification (UserID, otp) VALUES (?, ?)',
             [UserID, hashedOTP]
         );
         try{
