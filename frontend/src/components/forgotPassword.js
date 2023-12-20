@@ -207,7 +207,7 @@ export default function Forgot() {
                   OTP
                 </label>
                 <div className="text-sm">
-                  <a 
+                  <div 
                     className='font-semibold text-indigo-600 hover:text-indigo-500'  
                     onClick={handleOTPCount}
                     style={
@@ -220,7 +220,7 @@ export default function Forgot() {
                     }
                   >
                     Resend OTP {resendOTPCount>0 && `in ${resendOTPCount}s`}
-                  </a>
+                  </div>
                 </div>
               </div>
               <div className="mt-2">
