@@ -45,7 +45,7 @@ exports.sendOTP=async (req,res)=>{
     }
     catch (error) {
         // Handle any errors that occurred during sending the email
-        res.status(500).json({ 'status': 'error', 'message': 'Internal server error' });
+        res.status(500).json({ 'status': 'error', 'message': error.message });
     }
 }
 exports.verifyOTP = async (req, res) => {
@@ -70,7 +70,7 @@ exports.verifyOTP = async (req, res) => {
       res.status(404).json({ message: 'OTP Verification Failure' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error.message });
   }
 };
 

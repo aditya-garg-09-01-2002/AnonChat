@@ -32,7 +32,7 @@ exports.checkUser=async(req,res)=>{
         if(error.errno==1062)
             res.json({success:false,error:'User Already Exists'});
         else
-            res.status(500).json({ success: false, error: 'Internal Server Error' });
+           res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
 exports.forgotPassword=async(req,res)=>{
@@ -47,6 +47,6 @@ exports.forgotPassword=async(req,res)=>{
             res.status(200).json({ success: true,message:"Password Reset Successfully" });
         else res.status(404).json({success:false,message:"User Does Not Exists"})
     } catch (error) {
-            res.status(500).json({ success: false, message: 'Internal Server Error' });
+        res.status(500).json({ message: error.message });
     }
 }
