@@ -7,6 +7,8 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
   const navigate=useNavigate();
   const [openModal, setOpenModal] = useState(isOpen);
   const [buttonsModal,setButtonsModal]=useState(buttons);
+  const [modalMessage,setMessageModal]=useState(message);
+  const [currentStatus,setStatusModal]=useState(status)
   const handleClick=(button)=>{
     if(button.link==="N/A")
     {
@@ -17,10 +19,38 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
       setOpenModal(false);
       clearFields();
     }
+    else if(button.link==="_logout_")
+    {
+      (async ()=>{
+        try{
+          const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'log/out',{
+            method:'POST',
+            credentials:'include',
+            headers:{
+              'Content-type':'application/json',
+            },
+          });
+          const data=await response.json();
+          if (response.ok)
+          {
+            navigate('/',{relative:"path"})
+          }                 
+          else throw new Error(data.message)
+        }
+        catch(error)
+        {
+          setMessageModal("kasmd")
+          setStatusModal("sad")
+          setButtonsModal([{name:"Close",link:"N/A",color:"failure"}])
+        }
+      })()
+    }
+    else if(button.link==="_suggestions_")
+        window.location.href="https://adityagarg9102.netlify.app/#formContainer"
     else navigate(button.link,{relative:"path"})
   }
   function icon(){
-    switch(status)
+    switch(currentStatus)
     {
       case "sad" : return <HiOutlineEmojiSad className="mt-6 mx-auto mb-4 h-14 w-14 text-red-700 dark:text-red-500" />
       case "happy" : return <HiOutlineEmojiHappy className="mt-6 mx-auto mb-4 h-14 w-14 text-green-400 dark:text-green-200" />
@@ -38,7 +68,7 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
           <div className="text-center">
             {icon()}
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                {message.split('\n').map((line, index) => (
+                {modalMessage.split('\n').map((line, index) => (
                 <p key={index}>{line}</p>
               ))}
             </h3>
