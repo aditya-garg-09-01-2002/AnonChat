@@ -43,7 +43,7 @@ export default function SignUp() {
     updateCounter(30);
     
     try{
-      const response = await fetch('http://192.168.29.195:9000/otp/send',{
+      const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/send',{
         method:'POST',
         headers:{
           'Content-Type':'application/json',
@@ -70,7 +70,7 @@ export default function SignUp() {
     {
       try
       {
-        const response = await fetch('http://192.168.29.195:9000/register/checkUser',{
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'register/checkUser',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -89,7 +89,7 @@ export default function SignUp() {
         setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
       }
       try{
-        const response = await fetch('http://192.168.29.195:9000/otp/send',{
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/send',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -111,7 +111,7 @@ export default function SignUp() {
     }
     else{
       try {
-        const response = await fetch('http://192.168.29.195:9000/otp/verify', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function SignUp() {
         // Handle authentication based on the server response
         if (response.ok) {
 
-            const response2 = await fetch('http://192.168.29.195:9000/register', {
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_LINK+'register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

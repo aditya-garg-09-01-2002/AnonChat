@@ -27,10 +27,10 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     
-    e.preventDefault();
+    e.preventDefault(); 
 
     try {
-      const response = await fetch('http://192.168.29.195:9000/login', {
+      const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'login', {
         method: 'POST',
         credentials:'include',
         headers: {
@@ -38,7 +38,6 @@ export default function Login() {
         },
         body: JSON.stringify({ UserID: userID, UserPassword: userPassword }),
       });
-
       const data = await response.json();
 
       // Handle authentication based on the server response
@@ -55,6 +54,7 @@ export default function Login() {
         setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Change Password",color:"gray",link:"reset"}],modalStatus:"sad"}) 
       
       else throw new Error(data.message)
+        
     } 
     catch (error) {
       setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})

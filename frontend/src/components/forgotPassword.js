@@ -40,7 +40,7 @@ export default function Forgot() {
     updateCounter(30);
     
     try{
-        const response = await fetch('http://192.168.29.195:9000/otp/send',{
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/send',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -67,7 +67,7 @@ export default function Forgot() {
     {
       try
       {
-        const response = await fetch('http://192.168.29.195:9000/register/checkUser',{
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'register/checkUser',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -86,7 +86,7 @@ export default function Forgot() {
         setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
       }
       try{
-        const response = await fetch('http://192.168.29.195:9000/otp/send',{
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/send',{
           method:'POST',
           headers:{
             'Content-Type':'application/json',
@@ -108,7 +108,7 @@ export default function Forgot() {
     }
     else{
       try {
-        const response = await fetch('http://192.168.29.195:9000/otp/verify', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function Forgot() {
         // Handle authentication based on the server response
         if (response.ok) {
             // Successful login, handle accordingly (e.g., redirect to home page)
-            const response2 = await fetch('http://192.168.29.195:9000/register/forgot', {
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_LINK+'register/forgot', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
