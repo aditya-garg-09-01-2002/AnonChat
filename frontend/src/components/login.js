@@ -30,7 +30,7 @@ export default function Login() {
     e.preventDefault(); 
 
     try {
-      const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'login', {
+      const response = await fetch(process.env.REACT_APP_BACKEND_LINK+'log/in', {
         method: 'POST',
         credentials:'include',
         headers: {
@@ -39,11 +39,9 @@ export default function Login() {
         body: JSON.stringify({ UserID: userID, UserPassword: userPassword }),
       });
       const data = await response.json();
-
+      
       // Handle authentication based on the server response
       if (response.ok) {
-        localStorage.setItem('UserID',data.user.UserID)
-
         // Successful login, handle accordingly (e.g., redirect to home page)
         navigate('/home');
       } 
