@@ -9,6 +9,13 @@ try{
   const oAuth2Client = new google.auth.OAuth2(mailConfig.CLIENT_ID, mailConfig.CLIENT_SECRET, mailConfig.REDIRECT_URI);
   oAuth2Client.setCredentials({refresh_token: mailConfig.REFRESH_TOKEN,});
 
+  oAuth2Client.on('tokens', (tokens) => {
+    if (tokens.refresh_token) {
+      // Store the new refresh token securely
+      mailConfig.REFRESH_TOKEN = tokens.refresh_token;
+    }
+  })
+
   transporter = nodemailer.createTransport({
       service: mailConfig.service,
       auth: {
