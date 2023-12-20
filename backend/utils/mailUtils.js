@@ -24,7 +24,7 @@ try{
         clientId: mailConfig.CLIENT_ID,
         clientSecret: mailConfig.CLIENT_SECRET,
         refreshToken: mailConfig.REFRESH_TOKEN,
-        accessToken: oAuth2Client.getAccessToken(),
+        // accessToken: oAuth2Client.getAccessToken(),
       },
   });
 
