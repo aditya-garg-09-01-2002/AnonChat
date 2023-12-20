@@ -13,8 +13,8 @@ export default function Login() {
     setPassword("");
   };
   
-  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields})
-
+  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields,onOTP:false,modalStatus:""})
+  
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -38,6 +38,7 @@ export default function Login() {
         },
         body: JSON.stringify({ UserID: userID, UserPassword: userPassword }),
       });
+
       const data = await response.json();
 
       // Handle authentication based on the server response
@@ -48,18 +49,16 @@ export default function Login() {
         navigate('/home');
       } 
       else if(response.status===404)
-        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Create New User",color:"gray",link:"signup"}]})
+        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry With Different Account",color:"failure",link:"_close_"},{name:"Create New User",color:"gray",link:"signup"}],modalStatus:"sad"})
 
       else if(response.status===401)
-        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Change Password",color:"gray",link:"reset"}]}) 
+        setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"_close_"},{name:"Change Password",color:"gray",link:"reset"}],modalStatus:"sad"}) 
       
       else throw new Error(data.message)
     } 
     catch (error) {
-      setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+      setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
     }
-    setEmail("");
-    setPassword("");
   };
 
   return (
@@ -142,7 +141,7 @@ export default function Login() {
           </p>
         </div>
 
-        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields}/>
+        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields} OTPPage={modalProps.onOTP} status={modalProps.modalStatus}/>
 
       </div>
     </>
