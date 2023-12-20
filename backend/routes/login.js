@@ -4,6 +4,7 @@ const router = express.Router();
 const loginController = require('../controllers/loginController');
 
 // Define user routes
-router.post('/', loginController.validateLogin);
+router.post('/in', loginController.validateLogin);
+router.post('/out',loginController.logout)
 
 module.exports = router;
