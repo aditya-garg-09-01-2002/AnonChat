@@ -13,9 +13,10 @@ exports.query = async (sql, values) => {
     }
     catch(error)
     {
-        throw new Error(error.message)
+        throw new Error("Server Error : Troubleshoot\n1. Check Internet Connection\n2. Allow access to Clever Cloud, France servers\n3.Try Again Later")
     } 
     finally {
-        connection.release();
+        if(connection)
+            connection.release();
     }
 };
