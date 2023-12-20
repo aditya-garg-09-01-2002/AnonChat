@@ -30,8 +30,8 @@ exports.validateLogin = async (req, res) => {
         // Compare the provided password with the hashed password in the database
         const isPasswordValid = await bcrypt.compare(UserPassword, hashedPassword);
         if (isPasswordValid) {
-            // Successful login
-            const jwtToken=jwt.sign({User:UserID},jwtConfig.JWT_SECRET_KEY,{expiresIn:'1d',});
+
+          const jwtToken=jwt.sign({User:UserID},jwtConfig.JWT_SECRET_KEY,{expiresIn:'1d',});
             res.cookie('jwt',jwtToken,{
               httpOnly:true,//maybe this
               sameSite:'none',
