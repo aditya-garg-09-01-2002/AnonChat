@@ -13,7 +13,7 @@ const cookieParser=require('cookie-parser');
 
 
 app.use(cors({
-    origin: appConfig.FRONTEND_LINK,
+    origin: [appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
     credentials: true,
 }));
 
