@@ -66,7 +66,7 @@ export default function SignUp() {
   }
   const verify = async (e) => {
     e.preventDefault();
-    if(registrationButton==0)
+    if(registrationButton===0)
     {
       try
       {
@@ -165,7 +165,7 @@ export default function SignUp() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={verify}>
-            {registrationButton==0?<div>
+            {registrationButton===0?<div>
               <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
               </label>
@@ -197,14 +197,14 @@ export default function SignUp() {
                   autoComplete="email"
                   required
                   value={userID}
-                  disabled={registrationButton==0?false:true}
+                  disabled={registrationButton===0?false:true}
                   onChange={handleEmailChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
-            {registrationButton==0?<div>
+            {registrationButton===0?<div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Password
@@ -224,7 +224,7 @@ export default function SignUp() {
               </div>
             </div>:<div></div>}
             
-            {registrationButton==1?<div>
+            {registrationButton===1?<div>
               <div className="flex items-center justify-between">
                 <label htmlFor="OTP" className="block text-sm font-medium leading-6 text-gray-900">
                   OTP
@@ -267,7 +267,7 @@ export default function SignUp() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {registrationButton==0 ? "Send Verification Code":"Verify The Code"}
+                {registrationButton===0 ? "Send Verification Code":"Verify The Code"}
               </button>
             </div>
           </form>
