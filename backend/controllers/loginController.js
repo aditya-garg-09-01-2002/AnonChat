@@ -37,6 +37,7 @@ exports.validateLogin = async (req, res) => {
       res.status(404).json({ message: 'User Not Found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error\nRetry Again Some Time Later' });
+    // console.log(error)
+    res.status(500).json({ message: error.message });
   }
 };
