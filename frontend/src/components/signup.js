@@ -26,7 +26,7 @@ export default function SignUp() {
     setOTP("");
   };
   
-  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields})
+  const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields,onOTP:false,modalStatus:""})
   
   // mode 0 - code is yet not sent
   // mode 1 - code is sent successfully
@@ -80,15 +80,13 @@ export default function SignUp() {
         const data=await response.json();
         if(data.message==='User Already Exists')
         {
-          //display and move to login 
-          // navigate('/')
-          setShowModal({modalOpen:true,modalMessage:"User Already Exists",modalButtons:[{name:"Move to Login",color:"failure",link:".."},{name:"Create New User",color:"gray",link:"_close_"}]})
+          setShowModal({modalOpen:true,modalMessage:"User Already Exists",modalButtons:[{name:"Move to Login ?",color:"failure",link:".."},{name:"Use Different Email",color:"gray",link:"_close_"}],modalStatus:"happy"})
           return ;
         }
       }
       catch(error)
       {
-        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
       }
       try{
         const response = await fetch('http://192.168.29.195:9000/otp/send',{
@@ -104,11 +102,11 @@ export default function SignUp() {
           updateRegistrationStatus(1)
         } else {
           // Failed login, display error message
-          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"N/A"}]})
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry",color:"failure",link:"N/A"}],modalStatus:"sad"})
         }
       }
       catch (error) {
-        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
       }
     }
     else{
@@ -136,16 +134,16 @@ export default function SignUp() {
           const data2 = await response2.json();
           if(response2.ok)
           {
-            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Move to Login",color:"failure",link:"/"}]})
+            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Move to Login",color:"failure",link:"/"}],modalStatus:"happy"})
           }
           else{
-            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+            setShowModal({modalOpen:true,modalMessage:data2.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
           }
         } else {
-          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
+          setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Try Again",color:"failure",link:"N/A"}],onOTP:true})
         }
       } catch (error) {
-        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"N/A"}]})
+        setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}]})
       }
     }
   }
@@ -281,7 +279,7 @@ export default function SignUp() {
             </Link>
           </p>
         </div>
-        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields}/>
+        <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields} OTPPage={modalProps.onOTP} status={modalProps.modalStatus}/>
 
       </div>
     </>
