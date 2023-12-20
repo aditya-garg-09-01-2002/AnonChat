@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const appConfig=require('./config/appConfig')
+const jwtConfig=require('./config/jwt')
 const cors=require('cors');
 const loginRoutes=require('./routes/login');
 const registerRoutes=require('./routes/register');
@@ -22,6 +23,7 @@ app.use(
         secret: "your-secret-key", // maybe this
         resave: false,
         saveUninitialized: false,
+        name:jwtConfig.JWT_COOKIE_NAME,
         // cookie: { secure: true, sameSite: "none" }, // Set to true if using HTTPS
     })
 );
