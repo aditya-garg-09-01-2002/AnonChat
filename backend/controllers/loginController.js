@@ -7,6 +7,7 @@ const jwtConfig=require('../config/jwt')
 exports.logout= (req, res) => {
   res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
 
+  console.log(req.session)
   try {
     req.session.destroy((err) => {
       if (err) 
@@ -32,11 +33,6 @@ exports.validateLogin = async (req, res) => {
         if (isPasswordValid) {
 
           const jwtToken=jwt.sign({User:UserID},jwtConfig.JWT_SECRET_KEY,{expiresIn:'1d',});
-            res.cookie('jwt',jwtToken,{
-              httpOnly:true,//maybe this
-              sameSite:'none',
-              maxAge: 24 * 60 * 60 * 1000,
-            });
             req.session.user={
               UserID:UserID,
               jwtToken
@@ -51,7 +47,7 @@ exports.validateLogin = async (req, res) => {
       res.status(404).json({ message: 'User Not Found' });
     }
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     res.status(500).json({ message: error.message });
   }
 };
