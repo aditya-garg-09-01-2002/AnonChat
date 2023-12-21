@@ -3,11 +3,11 @@ const dbUtils = require('../utils/dbUtils');
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
+const sessionConfig=require('../config/session')
 
 exports.logout= (req, res) => {
-  res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
+  res.clearCookie(sessionConfig.SESSION_COOKIE_NAME);
 
-  console.log(req.session)
   try {
     req.session.destroy((err) => {
       if (err) 

@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const appConfig=require('./config/appConfig')
 const jwtConfig=require('./config/jwt')
+const sessionConfig=require('./config/session')
 const cors=require('cors');
 const loginRoutes=require('./routes/login');
 const registerRoutes=require('./routes/register');
@@ -20,11 +21,15 @@ app.use(cors({
 app.use(cookieParser());
 app.use(
     expressSession({
-        secret: "your-secret-key", // maybe this
+        secret: sessionConfig.SESSION_KEY,
         resave: false,
         saveUninitialized: false,
-        name:jwtConfig.JWT_COOKIE_NAME,
-        cookie: { secure: true, sameSite: process.env.ENVIRONMENT==="production" }, // Set to true if using HTTPS
+        name: sessionConfig.SESSION_COOKIE_NAME,
+        maxAge: 1000*60*60*2, // 2 hour sessions only
+        cookie: { 
+            secure: sessionConfig.ENVIRONMENT==="production"?true:false,
+            sameSite:'none', //production build must have this set
+        },
     })
 );
     
