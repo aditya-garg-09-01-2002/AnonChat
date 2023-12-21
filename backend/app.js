@@ -24,7 +24,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         name:jwtConfig.JWT_COOKIE_NAME,
-        // cookie: { secure: true, sameSite: "none" }, // Set to true if using HTTPS
+        cookie: { secure: true, sameSite: process.env.ENVIRONMENT==="production" }, // Set to true if using HTTPS
     })
 );
     

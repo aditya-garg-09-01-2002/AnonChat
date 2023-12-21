@@ -36,7 +36,6 @@ exports.validateLogin = async (req, res) => {
               httpOnly:true,//maybe this
               sameSite:'none',
               maxAge: 24 * 60 * 60 * 1000,
-              // secure:true
             });
             req.session.user={
               UserID:UserID,
