@@ -3,7 +3,6 @@ const dbUtils = require('../utils/dbUtils');
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
-const sessionConfig=require('../config/session')
 
 exports.logout= (req, res) => {
   res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
@@ -42,15 +41,13 @@ exports.validateLogin = async (req, res) => {
           UserName:rows[0].name
         },jwtConfig.JWT_SECRET_KEY,{expiresIn:'2h',});
           res.cookie(jwtConfig.JWT_COOKIE_NAME,jwtToken,{
-            secret: jwtConfig.JWT_SECRET_KEY,
-            resave: false,
-            saveUninitialized: false,
+            httpOnly:true,
             maxAge: 1000*59*60*2, // 1 hour 59 min authentication only
             cookie: { 
                 secure: jwtConfig.ENVIRONMENT==="production"?true:false,
                 sameSite:'none', //production build must have this set
             }})
-            res.status(200).json({ message: 'Login Successful',env:jwtConfig.Environment,jwtToken});
+            res.status(200).json({ message: 'Login Successful'});
       } else {
         // Invalid password
         res.status(401).json({ message: 'Invalid Password' });
