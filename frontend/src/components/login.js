@@ -37,10 +37,10 @@ export default function Login() {
     (async()=>{
       try{
         const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
-          method:"POST",
+          method:"GET",
           credentials:"include",
           headers:{
-            'content-type':'application/json',
+            'Content-Type':'application/json',
           }
         })
         if(response.ok)
