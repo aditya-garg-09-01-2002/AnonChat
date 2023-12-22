@@ -35,7 +35,6 @@ exports.validateLogin = async (req, res) => {
         // Compare the provided password with the hashed password in the database
         const isPasswordValid = await bcrypt.compare(UserPassword, hashedPassword);
         if (isPasswordValid) {
-          console.log(rows[0])
         const jwtToken=jwt.sign({
           UserID,
           UserRole,
@@ -51,7 +50,7 @@ exports.validateLogin = async (req, res) => {
                 secure: jwtConfig.ENVIRONMENT==="production"?true:false,
                 sameSite:'none', //production build must have this set
             }})
-            res.status(200).json({ message: 'Login Successful'});
+            res.status(200).json({ message: 'Login Successful',env:jwtConfig.Environment,jwtToken});
       } else {
         // Invalid password
         res.status(401).json({ message: 'Invalid Password' });
