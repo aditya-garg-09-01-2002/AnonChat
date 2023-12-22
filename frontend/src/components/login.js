@@ -66,9 +66,8 @@ export default function Login() {
         },
         body: JSON.stringify({ UserID: userID, UserPassword: userPassword, UserRole:userRole, RoomID:roomID }),
       });
-      console.log(response)
       const data = await response.json();
-      
+      console.log(data)
       // Handle authentication based on the server response
       if (response.ok) {
         // Successful login, handle accordingly (e.g., redirect to home page)
