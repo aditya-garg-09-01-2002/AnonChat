@@ -43,10 +43,9 @@ exports.validateLogin = async (req, res) => {
           res.cookie(jwtConfig.JWT_COOKIE_NAME,jwtToken,{
             httpOnly:true,
             maxAge: 1000*59*60*2, // 1 hour 59 min authentication only
-            cookie: { 
-                secure: jwtConfig.ENVIRONMENT==="production"?true:false,
-                sameSite:'none', //production build must have this set
-            }})
+            secure: jwtConfig.ENVIRONMENT==="production"?true:false,
+            sameSite:'none', //production build must have this set
+            })
             res.status(200).json({ message: 'Login Successful'});
       } else {
         // Invalid password
