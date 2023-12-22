@@ -5,7 +5,11 @@ const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
 
 exports.logout= (req, res) => {
-  res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
+  res.clearCookie(jwtConfig.JWT_COOKIE_NAME,{
+    httpOnly:true,
+    secure: jwtConfig.ENVIRONMENT==="production"?true:false,
+    sameSite:'none', //production build must have this set
+    });
   res.status(200).json({message:'Successfully Logged Out!!!'});
   
 };
