@@ -7,14 +7,23 @@ export default function Login() {
   const navigate=useNavigate();
   const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
+  const [userRole,setRole]=useState("joinee");
+  const [roomID,setRoomID]=useState("")
+
   
   function clearFields(){
     setEmail("");
     setPassword("");
+    setRoomID("");
+    setRole("joinee");
   };
   
   const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields,onOTP:false,modalStatus:""})
   
+  const handleRoomIDChange=(e)=>{
+    setRoomID(e.target.value)
+  }
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -36,7 +45,7 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ UserID: userID, UserPassword: userPassword }),
+        body: JSON.stringify({ UserID: userID, UserPassword: userPassword, UserRole:userRole, RoomID:roomID }),
       });
       const data = await response.json();
       
@@ -120,6 +129,39 @@ export default function Login() {
                 />
               </div>
             </div>
+
+            <div>
+              <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={(e)=>{
+                e.preventDefault()
+                userRole==="joinee"?setRole("creator"):setRole("joinee")
+              }}
+              >
+                {userRole==="joinee"?"I want to create a room":"I want to join an existing room"}
+              </button>
+            </div>
+
+            {userRole==="joinee"?
+            <div>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                Room ID
+              </label>
+            </div>
+            <div className="mt-2">
+              <input
+                id="roomid"
+                name="roomid"
+                type="text"
+                autoComplete="off"
+                required
+                maxLength={8}
+                value={roomID}
+                onChange={handleRoomIDChange}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>:""}
 
             <div>
               <button
