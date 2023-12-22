@@ -15,8 +15,6 @@ const cookieParser=require('cookie-parser');
 app.use(cors({
     origin: [appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Request-Headers"],
-    enablePreflight: true
 }));
 
 app.use(cookieParser());
