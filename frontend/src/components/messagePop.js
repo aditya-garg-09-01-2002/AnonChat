@@ -39,7 +39,7 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
         }
         catch(error)
         {
-          setMessageModal("kasmd")
+          setMessageModal(error.message)
           setStatusModal("sad")
           setButtonsModal([{name:"Close",link:"N/A",color:"failure"}])
         }
