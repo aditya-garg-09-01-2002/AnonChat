@@ -35,15 +35,21 @@ export default function Login() {
 
   useEffect(()=>{
     (async()=>{
-      const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
-        method:"POST",
-        credentials:"include",
-        headers:{
-          'content-type':'application/json',
-        }
-      })
-      if(response.ok)
-        navigate('/home')
+      try{
+        const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
+          method:"POST",
+          credentials:"include",
+          headers:{
+            'content-type':'application/json',
+          }
+        })
+        if(response.ok)
+          navigate('/home')
+      }
+      catch(error)
+      {
+        navigate('/')
+      }
     })()
   },[])
   
