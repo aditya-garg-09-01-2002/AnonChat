@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {Link , useNavigate} from "react-router-dom"
 import MessagePop from "./messagePop";
 
@@ -33,7 +33,20 @@ export default function Login() {
   };
 
 
-
+  useEffect(()=>{
+    (async()=>{
+      const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
+        method:"POST",
+        credentials:"include",
+        headers:{
+          'content-type':'application/json',
+        }
+      })
+      if(response.ok)
+        navigate('/home')
+    })()
+  },[])
+  
   const handleSubmit = async (e) => {
     
     e.preventDefault(); 
