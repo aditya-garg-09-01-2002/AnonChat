@@ -7,16 +7,16 @@ const jwtConfig=require('../config/jwt')
 exports.logout= (req, res) => {
   res.clearCookie(jwtConfig.JWT_COOKIE_NAME);
 
-  // try {
-  //   req.session.destroy((err) => {
-  //     if (err) 
-  //       res.status(500).json({message:'Internal Server Error'});
-  //     else 
-  //       res.status(200).json({message:'Successfully Logged Out!!!'});
-  //   });
-  // } catch (error) {
-  //   res.status(500).json({message:'Internal Server Error'});
-  // }
+  try {
+    req.session.destroy((err) => {
+      if (err) 
+        res.status(500).json({message:'Internal Server Error'});
+      else 
+        res.status(200).json({message:'Successfully Logged Out!!!'});
+    });
+  } catch (error) {
+    res.status(500).json({message:error.message});
+  }
   
 };
 
