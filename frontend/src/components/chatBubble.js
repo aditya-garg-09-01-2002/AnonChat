@@ -1,9 +1,10 @@
 import {React} from "react"
 
-export default function Bubble({message,sent}){
+export default function Bubble({message,sent,first}){
     return (
         <>
-            <div class="bubbleContainer" style={{
+            <div className="bubbleContainer" style={{
+                marginTop:first?"auto":"",
                 marginBottom:"10px",
                 marginRight:sent?"0":"auto",
                 marginLeft:sent?"auto":"0",
@@ -14,7 +15,7 @@ export default function Bubble({message,sent}){
                 maxWidth:"80%",
                 wordBreak:"break-word",
             }}>
-                <div class="bubble" style={{
+                <div className="bubble" style={{
                     padding:"0px",
                     margin:"0px",
                     color:sent===true?"purple":"green",
