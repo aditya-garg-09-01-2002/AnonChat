@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState ,useEffect,useRef} from "react";
 import {Link , useNavigate} from "react-router-dom"
 import MessagePop from "./messagePop";
 import { PasswordInput,EmailInput, RoomID } from "./inputs";
@@ -7,7 +7,9 @@ import AuthenticationHeader from "./authenticationHeader";
 
 export default function Login() {
   const navigate=useNavigate();
-  const [userRole,setRole]=useState("joinee");const [userID, setEmail] = useState("");
+  const roomButtonRef=useRef(null);
+  const [userRole,setRole]=useState("creator");
+  const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
   const [roomID,setRoomID]=useState("");
   
@@ -27,12 +29,14 @@ export default function Login() {
     setEmail("");
     setPassword("");
     setRoomID("");
-    setRole("joinee");
+    setRole("creator");
   };
   
   const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields,onOTP:false,modalStatus:""})
   
   useEffect(()=>{
+    // if(userRole==="creator")
+    //   roomButtonRef.current.style.width=roomButtonRef.current.offsetWidth+"px";
     (async()=>{
       try{
         const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
@@ -98,19 +102,7 @@ export default function Login() {
 
             <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} />
 
-
-            <div>
-              <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={(e)=>{
-                e.preventDefault()
-                userRole==="joinee"?setRole("creator"):setRole("joinee")
-              }}
-              >
-                {userRole==="joinee"?"I want to create a room":"I want to join an existing room"}
-              </button>
-            </div>
-
-            <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} />
+            <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} ref={roomButtonRef} setRole={setRole}/>
             <div>
               <button
                 type="submit"
