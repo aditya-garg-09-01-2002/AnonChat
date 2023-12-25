@@ -1,7 +1,8 @@
 import React, { useState,useEffect } from "react";
 import {Link} from "react-router-dom";
 import MessagePop from "./messagePop";
-
+import { EmailInput,NameInput,OTPInput,PasswordInput } from "./inputs";
+import AuthenticationHeader from "./authenticationHeader";
 export default function SignUp() {
 
   const [userName,setName] =useState("");
@@ -151,117 +152,14 @@ export default function SignUp() {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          {/* image link to anon chat logo */}
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Create Your Account
-          </h2>
-        </div>
+        <AuthenticationHeader/>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={verify}>
-            {registrationButton===0?<div>
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  pattern="[a-z A-Z]{-50}"
-                  maxLength={50}
-                  required
-                  value={userName}
-                  onChange={handleNameChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>:<div></div>}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={userID}
-                  disabled={registrationButton===0?false:true}
-                  onChange={handleEmailChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            {registrationButton===0?<div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={userPassword}
-                  onChange={handlePasswordChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>:<div></div>}
-            
-            {registrationButton===1?<div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="OTP" className="block text-sm font-medium leading-6 text-gray-900">
-                  OTP
-                </label>
-                <div className="text-sm">
-                  <div 
-                    className='font-semibold text-indigo-600 hover:text-indigo-500'  
-                    onClick={handleOTPCount}
-                    style={
-                      { 
-                        pointerEvents: resendOTPCount > 0 ? 'none' : 'auto',
-                        color:resendOTPCount>0?'gray':'',
-                        opacity:resendOTPCount>0?'0.5':'',
-                        cursor:resendOTPCount>0?'not-allowed':'pointer',
-                      }
-                    }
-                  >
-                    Resend OTP {resendOTPCount>0 && `in ${resendOTPCount}s`}
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="OTP"
-                  name="OTP"
-                  maxLength={6}
-                  type="text"
-                  pattern="[0-9]{6}"
-                  autoComplete="off"
-                  required
-                  value={userOTP}
-                  onChange={handleOTPChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>:<div></div>}
-
+            <NameInput registrationButton={registrationButton} userName={userName} handleNameChange={handleNameChange}/>
+            <EmailInput userID={userID} registrationButton={registrationButton} handleEmailChange={handleEmailChange}/>
+            <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} />
+            <OTPInput userOTP={userOTP} registrationButton={registrationButton} handleOTPChange={handleOTPChange} handleOTPCount={handleOTPCount} resendOTPCount={resendOTPCount} />
             <div>
               <button
                 type="submit"
