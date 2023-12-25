@@ -1,6 +1,7 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
-export default function PasswordInput({userPassword,registrationButton,handlePasswordChange,title})
+export default function PasswordInput({userPassword,registrationButton,handlePasswordChange,title,forgotRequired})
 {
     return(
         <>
@@ -11,6 +12,14 @@ export default function PasswordInput({userPassword,registrationButton,handlePas
                         <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                             {title}
                         </label>
+                        {
+                            forgotRequired?
+                                <div className="text-sm">
+                                    <Link to='/reset' className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                    Forgot Password
+                                    </Link>
+                                </div>:""
+                        }
                     </div>
                     <div className="mt-2">
                         <input
