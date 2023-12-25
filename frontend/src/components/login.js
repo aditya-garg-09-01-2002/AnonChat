@@ -1,7 +1,7 @@
 import React, { useState ,useEffect,useRef} from "react";
 import {Link , useNavigate} from "react-router-dom"
 import MessagePop from "./messagePop";
-import { PasswordInput,EmailInput, RoomID } from "./inputs";
+import { PasswordInput,EmailInput, RoomID, SubmitButton } from "./inputs";
 import AuthenticationHeader from "./authenticationHeader";
 
 
@@ -103,14 +103,7 @@ export default function Login() {
             <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} />
 
             <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} ref={roomButtonRef} setRole={setRole}/>
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Log In
-              </button>
-            </div>
+            <SubmitButton title={"Log In"}/>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">

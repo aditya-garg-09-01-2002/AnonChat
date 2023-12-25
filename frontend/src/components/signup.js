@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import {Link} from "react-router-dom";
 import MessagePop from "./messagePop";
-import { EmailInput,NameInput,OTPInput,PasswordInput } from "./inputs";
+import { EmailInput,NameInput,OTPInput,PasswordInput,SubmitButton } from "./inputs";
 import AuthenticationHeader from "./authenticationHeader";
 export default function SignUp() {
 
@@ -158,16 +158,9 @@ export default function SignUp() {
           <form className="space-y-6" onSubmit={verify}>
             <NameInput registrationButton={registrationButton} userName={userName} handleNameChange={handleNameChange}/>
             <EmailInput userID={userID} registrationButton={registrationButton} handleEmailChange={handleEmailChange}/>
-            <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} />
+            <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} forgotRequired={false}/>
             <OTPInput userOTP={userOTP} registrationButton={registrationButton} handleOTPChange={handleOTPChange} handleOTPCount={handleOTPCount} resendOTPCount={resendOTPCount} />
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {registrationButton===0 ? "Send Verification Code":"Verify The Code"}
-              </button>
-            </div>
+            <SubmitButton title={registrationButton===0 ? "Send Verification Code":"Verify The Code"}/>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
