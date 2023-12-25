@@ -61,9 +61,12 @@ export default function Home(){
         }
         catch(error)
         {
-            // setMessageModal(error.message)
-            // setStatusModal("sad")
-            // setButtonsModal([{name:"Close",link:"N/A",color:"failure"}])
+            setShowModal({
+                ...modalProps,
+                modalMessage:error.message,
+                modalStatus:"sad",
+                modalButtons:[{name:"Close",link:"N/A",color:"failure"}],
+            })
         }
     }
     const [logoutHover,setLogoutHover]=useState(false)
@@ -100,9 +103,6 @@ export default function Home(){
                         {user.message}
                     </ChatHeader>
                     <ChatContainer lineHeight="1.5" height='calc(80vh - 4.5em - 10px - 3em - 4px)' margin="5px 0px" chats={chats}/>
-                        {/* {chats} */}
-                    {/* </ChatContainer> */}
-
                     <ChatMessageBox getMessage={handleInputMessage} buttonPadding="0px 50px" borderRadius="8px" borderWidth="2px" marginBottom="10px" height="3em" lineHeight="1.5"/>
                 </ChatMainContainer>
             </div>:
