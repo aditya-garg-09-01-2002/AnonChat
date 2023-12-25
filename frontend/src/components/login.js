@@ -2,6 +2,7 @@ import React, { useState ,useEffect} from "react";
 import {Link , useNavigate} from "react-router-dom"
 import MessagePop from "./messagePop";
 import { PasswordInput,EmailInput, RoomID } from "./inputs";
+import AuthenticationHeader from "./authenticationHeader";
 
 
 export default function Login() {
@@ -88,17 +89,7 @@ export default function Login() {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          {/* image link to anonchat logo */}
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Log In To Your Account
-          </h2>
-        </div>
+        <AuthenticationHeader/>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
