@@ -1,3 +1,4 @@
-export {default as EmailInput} from "./EmailInput";
-export {default as PasswordInput} from "./PasswordInput";
-export {default as OTPInput} from "./OTPInput"
+export {default as EmailInput} from "./email";
+export {default as PasswordInput} from "./userPassword";
+export {default as OTPInput} from "./otp"
+export {default as RoomID} from "./roomID";
