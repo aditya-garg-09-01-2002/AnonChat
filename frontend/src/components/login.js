@@ -1,8 +1,7 @@
 import React, { useState ,useEffect} from "react";
 import {Link , useNavigate} from "react-router-dom"
 import MessagePop from "./messagePop";
-import { PasswordInput,EmailInput } from "./inputs";
-// import Handlers from "./utils/inputHandlers";
+import { PasswordInput,EmailInput, RoomID } from "./inputs";
 
 
 export default function Login() {
@@ -10,9 +9,6 @@ export default function Login() {
   const [userRole,setRole]=useState("joinee");const [userID, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
   const [roomID,setRoomID]=useState("");
-  
-  
-  // const {userID,userPassword,roomID,handleRoomIDChange,handleEmailChange,handlePasswordChange}=Handlers()
   
   const handleRoomIDChange=(e)=>{
       setRoomID(e.target.value)
@@ -123,28 +119,7 @@ export default function Login() {
               </button>
             </div>
 
-            {userRole==="joinee"?
-            <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                Room ID
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="roomid"
-                name="roomid"
-                type="text"
-                autoComplete="off"
-                required
-                maxLength={8}
-                value={roomID}
-                onChange={handleRoomIDChange}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>:""}
-
+            <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} />
             <div>
               <button
                 type="submit"
