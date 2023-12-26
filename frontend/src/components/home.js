@@ -5,7 +5,6 @@ import {ChatMessageBox,ChatHeader,ChatContainer} from "./chat";
 import ChatMainContainer from "./chat/chatMainContainer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-// import {Shadow} from 'react-shadow';
 
 
 
@@ -34,8 +33,11 @@ export default function Home(){
                 },
             })
             const data=await response.json();
-            setUser({name:data.userName,message:data.message,roomID:data.roomID})
-            setLoading(false)
+            if(response.ok)
+            {
+                setUser({name:data.userName,message:data.message,roomID:data.roomID})
+                setLoading(false)
+            }
         })()
     },[])
 
