@@ -12,33 +12,38 @@ export default function Home(){
     const navigate=useNavigate();
     const [loading,setLoading]=useState(true);
     const [chats,setChat]=useState([]);
+    const [authorized,setAuthorized]=useState(false)
     const date=new Date();
     const time=(date).getHours()+":"+date.getMinutes(); //single digit minutes to be fixed
-    const [modalProps,setShowModal]=useState({
-        modalOpen:true,
-        modalMessage:"Hi !!!\nYou Have Successfully Logged In\nAnd obtained authorization cookie",
-        modalButtons:[
-            {name:"Any Recommendations?",color:"failure",link:"_suggestions_"},
-            {name:"Logout",color:"gray",link:"_logout_"}],
-            modalStatus:"happy",
-        })
+    const [modalProps,setShowModal]=useState({modalOpen:true,modalMessage:"Please Wait",modalButtons:[],modalStatus:"wait"})
     const [user,setUser]=useState({name:"",message:"",roomID:-1});
     useEffect(()=>{
-        (async()=>{
-            const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'chat',{
-                method:'GET',
-                credentials:"include",
-                headers:{
-                    'content-type':'application/json',
-                },
-            })
-            const data=await response.json();
-            if(response.ok)
-            {
-                setUser({name:data.userName,message:data.message,roomID:data.roomID})
-                setLoading(false)
-            }
-        })()
+        try{
+            (async()=>{
+                const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'chat',{
+                    method:'GET',
+                    credentials:"include",
+                    headers:{
+                        'content-type':'application/json',
+                    },
+                })
+                const data=await response.json();
+                if(response.ok)
+                {
+                    setUser({name:data.userName,message:data.message,roomID:data.roomID})
+                    setAuthorized(true);
+                }
+                else
+                {
+                    setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Move to login",color:"failure",link:"/"}],modalStatus:"sad"})
+                }
+            })()
+        }
+        catch(error)
+        {
+            setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Close",color:"failure",link:"_close_"}],modalStatus:"sad"})
+        }
+        setLoading(false)            
     },[])
 
     const handleInputMessage=(e)=>{
@@ -63,52 +68,54 @@ export default function Home(){
         }
         catch(error)
         {
-            setShowModal({
-                ...modalProps,
+            setShowModal(prevModalProps=>({
+                ...prevModalProps,
                 modalMessage:error.message,
                 modalStatus:"sad",
                 modalButtons:[{name:"Close",link:"N/A",color:"failure"}],
-            })
+            }))
         }
     }
     const [logoutHover,setLogoutHover]=useState(false)
     return (
     <>
         {
-            loading===false?
-            <div style={{
-                height:"100vh",
-                width:"100vw",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-            }}>
-                <FontAwesomeIcon 
-                    icon={faSignOutAlt}
-                    size="2xl"
-                    style={{
-                        position:"absolute",
-                        top:"20px",
-                        right:"20px",
-                        color:"black",
-                        transform:"scale(2)",
-                        filter:(logoutHover?"drop-shadow(1px 1px 2px rgba(0,0,0,0.9))":""),
-                    }}
-                    onClick={logout}
-                    onMouseEnter={()=>{setLogoutHover(true)}}
-                    onMouseLeave={()=>{setLogoutHover(false)}}
-                />
-                <ChatMainContainer width="60%" height="80vh" padding="10px" borderRadius="8px" borderWidth="1px" boxShadow={{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"}}>
-                    <ChatHeader lineHeight="1.5" height="calc(4.5em + 10px)" padding="5px" borderRadius="8px" borderWidth="2px">
-                        Hi! {user.name},<br />
-                        Welcome To Anon Chat<br />
-                        {user.message}
-                    </ChatHeader>
-                    <ChatContainer lineHeight="1.5" height='calc(80vh - 4.5em - 10px - 3em - 4px)' margin="5px 0px" chats={chats}/>
-                    <ChatMessageBox getMessage={handleInputMessage} buttonPadding="0px 50px" borderRadius="8px" borderWidth="2px" marginBottom="10px" height="3em" lineHeight="1.5"/>
-                </ChatMainContainer>
-            </div>:
-            <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>
+            loading?    
+                <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>:
+                authorized?
+                    <div style={{
+                        height:"100vh",
+                        width:"100vw",
+                        display:"flex",
+                        alignItems:"center",
+                        justifyContent:"center",
+                    }}>
+                        <FontAwesomeIcon 
+                            icon={faSignOutAlt}
+                            size="2xl"
+                            style={{
+                                position:"absolute",
+                                top:"20px",
+                                right:"20px",
+                                color:"black",
+                                transform:"scale(2)",
+                                filter:(logoutHover?"drop-shadow(1px 1px 2px rgba(0,0,0,0.9))":""),
+                            }}
+                            onClick={logout}
+                            onMouseEnter={()=>{setLogoutHover(true)}}
+                            onMouseLeave={()=>{setLogoutHover(false)}}
+                        />
+                        <ChatMainContainer width="60%" height="80vh" padding="10px" borderRadius="8px" borderWidth="1px" boxShadow={{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"}}>
+                            <ChatHeader lineHeight="1.5" height="calc(4.5em + 10px)" padding="5px" borderRadius="8px" borderWidth="2px">
+                                Hi! {user.name},<br />
+                                Welcome To Anon Chat<br />
+                                {user.message}
+                            </ChatHeader>
+                            <ChatContainer lineHeight="1.5" height='calc(80vh - 4.5em - 10px - 3em - 4px)' margin="5px 0px" chats={chats}/>
+                            <ChatMessageBox getMessage={handleInputMessage} buttonPadding="0px 50px" borderRadius="8px" borderWidth="2px" marginBottom="10px" height="3em" lineHeight="1.5"/>
+                        </ChatMainContainer>
+                    </div>:
+                    <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>
         }
     </>
   );
