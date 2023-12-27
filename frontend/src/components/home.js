@@ -57,11 +57,15 @@ export default function Home(){
     useEffect(()=>{
         socketRef.current=io(process.env.REACT_APP_BACKEND_LINK,{withCredentials:true});
         socketRef.current.emit('join',socketRef.current.id)
+        socketRef.current.on('room-unavailable',()=>{
+            setShowModal({modalOpen:true,modalMessage:"Room is not Created",modalButtons:[{name:"Either Create or Join a Different Room",color:"failure",link:"_logout"}],modalStatus:"sad"});
+            socketRef.current.emit('leave');
+        })
         socketRef.current.on('receive-message',(received)=>
             setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
         )
         return ()=>{
-            socketRef.current.emit('leave',socketRef.current.id)
+            socketRef.current.emit('leave')
         }
     },[authorized])
     const handleInputMessage=(e)=>{                                                                                                                         
