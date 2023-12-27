@@ -73,8 +73,39 @@ export default function Login() {
       
       // Handle authentication based on the server response
       if (response.ok) {
-        // Successful login, handle accordingly (e.g., redirect to home page)
-        navigate('/home');
+        if(userRole==="creator")
+        {
+          
+          try{
+            const createRoomResponse = await fetch(process.env.REACT_APP_BACKEND_LINK+'chat/create',{
+              method:'POST',
+              credentials:'include',
+              headers:{
+              'Content-Type':'application/json',
+              },
+            })
+            const createRoomResponseData=await createRoomResponse.json();
+            if(createRoomResponse.ok)
+              navigate('/home');
+            else 
+              setShowModal({modalOpen:true,modalMessage:createRoomResponseData.message,modalButtons:[{name:"Move to Login",color:"failure",link:"_logout_"},],modalStatus:"sad"})
+            }
+          catch(error)
+          {
+            const LogoutResponse=await fetch(process.env.REACT_APP_BACKEND_LINK+'log/out',{
+              method:'POST',
+              credentials:'include',
+              headers:{
+                'Content-Type':'application/json',
+              },
+            })
+            await LogoutResponse
+            setShowModal({modalOpen:true,modalMessage:error.message,modalButtons:[{name:"Retry",color:"failure",link:"N/A"},],modalStatus:"sad"})
+  
+          }
+        }
+        else if(userRole==="joinee")
+          navigate('/home');
       } 
       else if(response.status===404)
         setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Retry With Different Account",color:"failure",link:"_close_"},{name:"Create New User",color:"gray",link:"signup"}],modalStatus:"sad"})
@@ -94,18 +125,13 @@ export default function Login() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <AuthenticationHeader/>
-
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <EmailInput userID={userID} registrationButton={0} handleEmailChange={handleEmailChange}/>
-
-
-            <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} />
-
+            <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} forgotRequired={true}/>
             <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} ref={roomButtonRef} setRole={setRole}/>
             <SubmitButton title={"Log In"}/>
           </form>
-
           <p className="mt-10 text-center text-sm text-gray-500">
             Not Joined Yet?{' '}
             <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
@@ -113,9 +139,7 @@ export default function Login() {
             </Link>
           </p>
         </div>
-
         <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} clearFields={clearFields} OTPPage={modalProps.onOTP} status={modalProps.modalStatus}/>
-
       </div>
     </>
   );
