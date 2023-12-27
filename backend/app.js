@@ -42,3 +42,39 @@ const io = socketIO(server, {
         credentials:true,
     },
 });
+
+io.on('connection',socket=>{
+    const rawCookies=socket.request.headers.cookie;
+    const parsedCookies=parseCookies(rawCookies);
+    const jwtToken=getJWT(parsedCookies);
+    const {authorized,userID,userName,userRole,roomID}=jwtToken;
+    socket.on('join',()=>{
+        if(!authorized)
+        {
+            io.to(socket.id).emit('session-expired')
+            return ;
+        }
+        if(userRole==="creator")
+            socket.join(roomID);
+        else if(userRole==="joinee")
+        {
+            if(getSize(io,roomID)===0)
+                io.to(socket.id).emit('room-unavailable')
+            else 
+                socket.join(roomID);
+        }
+        else io.to(socket.id).emit('permission-denied')
+    })
+    socket.on('leave',()=>{
+        socket.leaveAll();
+    })
+    socket.on('send-message',message=>{
+        if(!authorized)
+        {
+            io.to(socket.id).emit('session-expired')
+            socket.leaveAll();
+            return ;
+        }
+        socket.broadcast.to(roomID).emit('receive-message',{message:message,time:curTime()});
+    })
+})
