@@ -5,10 +5,12 @@ import {ChatMessageBox,ChatHeader,ChatContainer} from "./chat";
 import ChatMainContainer from "./chat/chatMainContainer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import io from "socket.io-client"
 
 
 
 export default function Home(){
+    const socketRef=useRef(null)
     const navigate=useNavigate();
     const [loading,setLoading]=useState(true);
     const [chats,setChat]=useState([]);
@@ -52,6 +54,16 @@ export default function Home(){
         }
         setLoading(false)            
     },[])
+    useEffect(()=>{
+        socketRef.current=io(process.env.REACT_APP_BACKEND_LINK,{withCredentials:true});
+        socketRef.current.emit('join',socketRef.current.id)
+        socketRef.current.on('receive-message',(received)=>
+            setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
+        )
+        return ()=>{
+            socketRef.current.emit('leave',socketRef.current.id)
+        }
+    },[authorized])
     const handleInputMessage=(e)=>{                                                                                                                         
         const rawMessage=e;
         socketRef.current.emit('send-message',rawMessage)
