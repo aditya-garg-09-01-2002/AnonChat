@@ -15,4 +15,18 @@ const getJWT=(allCookies)=>{
         roomID:decoded_jwtToken.RoomID,
     };
 }
-module.exports=getJWT
+
+const parseCookies=(cookieString)=> {
+    const cookies = {};
+    if (cookieString) {
+      cookieString.split(';').forEach((cookie) => {
+        const parts = cookie.split('=');
+        const key = parts.shift().trim();
+        const value = decodeURI(parts.join('='));
+        cookies[key] = value;
+      });
+    }
+    return cookies;
+}
+
+module.exports={getJWT,parseCookies}
