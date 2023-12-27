@@ -2,6 +2,8 @@ import { Button, Modal } from 'flowbite-react';
 import { useState,useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 import { HiOutlineEmojiHappy,HiOutlineEmojiSad,HiOutlineExclamationCircle } from 'react-icons/hi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,status}) {
   const navigate=useNavigate();
@@ -54,13 +56,21 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
     {
       case "sad" : return <HiOutlineEmojiSad className="mt-6 mx-auto mb-4 h-14 w-14 text-red-700 dark:text-red-500" />
       case "happy" : return <HiOutlineEmojiHappy className="mt-6 mx-auto mb-4 h-14 w-14 text-green-400 dark:text-green-200" />
+      case "wait": return <FontAwesomeIcon icon={faSpinner} className="mt-6 mx-auto mb-4 h-14 w-14 text-blue-700 dark:text-blue-500" 
+                            style=
+                              {{
+                                  animation:"spin 1.5s ease-out infinite", 
+                                  '@keyframes spin':{from:{transform:'rotate(0deg)'},to:{transform:'rotate(360deg)'}}
+                              }}/>
       default : return <HiOutlineExclamationCircle className="mt-6 mx-auto mb-4 h-14 w-14 text-red-700 dark:text-red-500" />
     }
   }
   useEffect(() => {
     setOpenModal(isOpen);
     setButtonsModal(buttons);
-  }, [isOpen,buttons]);
+    setMessageModal(message);
+    setStatusModal(status);
+  }, [isOpen,buttons,message,status]);
   return (
     <>
       <Modal show={openModal} size="sm" popup>
