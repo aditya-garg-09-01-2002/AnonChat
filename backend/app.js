@@ -29,7 +29,7 @@ app.use('/register',registerRoutes);
 app.use('/otp',otpRoutes);
 app.use('/chat',chatRoutes);
 app.use('/socket.io', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', process.env.FRONTEND_LINK);
+    res.header('Access-Control-Allow-Origin', appConfig.FRONTEND_LINK+'/');
     next();
 });
 
