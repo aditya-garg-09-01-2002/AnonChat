@@ -28,6 +28,10 @@ app.use('/log',loginRoutes);
 app.use('/register',registerRoutes);
 app.use('/otp',otpRoutes);
 app.use('/chat',chatRoutes);
+app.use('/socket.io', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', process.env.FRONTEND_LINK);
+    next();
+});
 
 const PORT = process.env.PORT || 9000;
 
