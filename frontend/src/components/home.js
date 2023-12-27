@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MessagePop from "./messagePop";
 import { useNavigate } from "react-router-dom";
 import {ChatMessageBox,ChatHeader,ChatContainer} from "./chat";
@@ -17,10 +17,16 @@ export default function Home(){
     const time=(date).getHours()+":"+date.getMinutes(); //single digit minutes to be fixed
     const [modalProps,setShowModal]=useState({modalOpen:true,modalMessage:"Please Wait",modalButtons:[],modalStatus:"wait"})
     const [user,setUser]=useState({name:"",message:"",roomID:-1});
+    const curTime=()=>{
+        const date=new Date();
+        const hours=date.getHours();
+        const minutes=date.getMinutes();
+        return (hours>9?hours:hours>0?"0"+hours:"00")+":"+(minutes>9?minutes:minutes>0?"0"+minutes:"00")
+    } 
     useEffect(()=>{
         try{
             (async()=>{
-                const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'chat',{
+                const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'chat/entry',{
                     method:'GET',
                     credentials:"include",
                     headers:{
@@ -31,11 +37,12 @@ export default function Home(){
                 if(response.ok)
                 {
                     setUser({name:data.userName,message:data.message,roomID:data.roomID})
+                    console.log(data)
                     setAuthorized(true);
                 }
                 else
                 {
-                    setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Move to login",color:"failure",link:"/"}],modalStatus:"sad"})
+                    setShowModal({modalOpen:true,modalMessage:data.message,modalButtons:[{name:"Move to login",color:"failure",link:"_logout_"}],modalStatus:"sad"})
                 }
             })()
         }
@@ -45,10 +52,10 @@ export default function Home(){
         }
         setLoading(false)            
     },[])
-
-    const handleInputMessage=(e)=>{
+    const handleInputMessage=(e)=>{                                                                                                                         
         const rawMessage=e;
-        setChat((prevChats)=>[...prevChats,{message:rawMessage,sent:true,time:time}])
+        socketRef.current.emit('send-message',rawMessage)
+        setChat((prevChats)=>[...prevChats,{message:rawMessage,sent:true,time:curTime()}])
     }
     async function logout(){
         try{
