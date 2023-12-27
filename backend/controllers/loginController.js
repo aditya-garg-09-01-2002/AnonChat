@@ -9,14 +9,14 @@ exports.logout= (req, res) => {
     httpOnly:true,
     secure: jwtConfig.ENVIRONMENT==="production"?true:false,
     sameSite:'none', //production build must have this set
-    });
+  });
   res.status(200).json({message:'Successfully Logged Out!!!'});
   
 };
+//please check production status for the sameSite
 
-
-function getRoomID(UserRole,RoomID){
-  return UserRole==="creator"?"12345678":RoomID
+function getRoomID(UserRole,RoomID,UserName){
+  return UserRole==="creator"?(new Date()).getTime():RoomID
 }
 
 exports.validateLogin = async (req, res) => {
@@ -28,10 +28,11 @@ exports.validateLogin = async (req, res) => {
         // Compare the provided password with the hashed password in the database
         const isPasswordValid = await bcrypt.compare(UserPassword, hashedPassword);
         if (isPasswordValid) {
+          const roomID=getRoomID(UserRole,RoomID,rows[0].name);
         const jwtToken=jwt.sign({
           UserID,
           UserRole,
-          RoomID:getRoomID(UserRole,RoomID),
+          RoomID:roomID,
           UserName:rows[0].name
         },jwtConfig.JWT_SECRET_KEY,{expiresIn:'2h',});
           res.cookie(jwtConfig.JWT_COOKIE_NAME,jwtToken,{
@@ -40,7 +41,7 @@ exports.validateLogin = async (req, res) => {
             secure: jwtConfig.ENVIRONMENT==="production"?true:false,
             sameSite:'none', //production build must have this set
             })
-            res.status(200).json({ message: 'Login Successful'});
+            res.status(200).json({ message: 'Login Successful',roomID});
       } else {
         // Invalid password
         res.status(401).json({ message: 'Invalid Password' });
