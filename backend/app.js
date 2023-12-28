@@ -10,7 +10,7 @@ const otpRoutes =require('./routes/otp');
 const cookieParser=require('cookie-parser');
 const socketIO=require('socket.io');
 const {getJWT,parseCookies}=require('./utils/jwtUtils')
-const {getSize,curTime}=require('./utils/chatUtils')
+const {getSize}=require('./utils/chatUtils')
 
 
 
@@ -83,6 +83,6 @@ io.on('connection',socket=>{
             socket.leaveAll();
             return ;
         }
-        socket.broadcast.to(roomID).emit('receive-message',{message:message,time:curTime()});
+        socket.broadcast.to(roomID).emit('receive-message',{message:message});
     })
 })
