@@ -17,6 +17,9 @@ const {getSize,curTime}=require('./utils/chatUtils')
 app.use(cors({
     origin: [appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
     credentials: true,
+    headers:{
+        'Access-Control-Allow-Origin':[appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
+    }
 }));
 
 app.use(cookieParser());
@@ -40,6 +43,9 @@ const io = socketIO(server, {
     cors: {
         origin: [appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
         credentials:true,
+        headers:{
+            'Access-Control-Allow-Origin':[appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
+        }
     },
 });
 
