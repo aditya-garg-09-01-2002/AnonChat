@@ -64,7 +64,10 @@ export default function Home(){
             setShowModal({modalOpen:true,modalMessage:"Fatal Authorization Error",modalButtons:[{name:"Try Logging in Again",color:"failure",link:"_logout_"}],modalStatus:"sad"});
         })
         socketRef.current.on('receive-message',(received)=>
-            setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
+            {
+                console.log(received);
+                setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
+            }
         )
         socketRef.current.on('session-expired',()=>{
             setShowModal({modalOpen:true,modalMessage:"Fatal Authorization Error",modalButtons:[{name:"Try Logging in Again",color:"failure",link:"_logout_"}],modalStatus:"sad"});
