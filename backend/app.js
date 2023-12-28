@@ -83,7 +83,6 @@ io.on('connection',socket=>{
             socket.leaveAll();
             return ;
         }
-        console.log(curTime());
         socket.broadcast.to(roomID).emit('receive-message',{message:message,time:curTime()});
     })
 })

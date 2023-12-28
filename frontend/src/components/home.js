@@ -65,7 +65,6 @@ export default function Home(){
         })
         socketRef.current.on('receive-message',(received)=>
             {
-                console.log(received);
                 setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
             }
         )
