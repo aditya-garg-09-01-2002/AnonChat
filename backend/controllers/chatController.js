@@ -31,6 +31,6 @@ exports.entry=(req,res)=>{
   const encoded_jwtToken=req.cookies[jwtConfig.JWT_COOKIE_NAME];
   const jwtToken=jwt.verify(encoded_jwtToken,jwtConfig.JWT_SECRET_KEY);
   const {UserName,RoomID} = jwtToken;
-  res.status(200).json({message:"you can join",userName:UserName,roomID:RoomID,message:"You are in Chatroom #"+RoomID});
+  res.status(200).json({message:"you can join",userName:UserName,roomID:RoomID,message:"You are in Chatroom "+RoomID});
 }
 
