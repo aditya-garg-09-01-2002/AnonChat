@@ -65,7 +65,7 @@ export default function Home(){
         })
         socketRef.current.on('receive-message',(received)=>
             {
-                setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:received.time}])
+                setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:curTime()}])
             }
         )
         socketRef.current.on('session-expired',()=>{
