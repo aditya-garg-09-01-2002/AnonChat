@@ -3,6 +3,7 @@ const dbUtils = require('../utils/dbUtils');
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const jwtConfig=require('../config/jwt')
+const {getRoomID}=require('../utils/chatUtils')
 
 exports.logout= (req, res) => {
   res.clearCookie(jwtConfig.JWT_COOKIE_NAME,{
@@ -14,10 +15,6 @@ exports.logout= (req, res) => {
   
 };
 //please check production status for the sameSite
-
-function getRoomID(UserRole,RoomID,UserName){
-  return UserRole==="creator"?(new Date()).getTime():RoomID
-}
 
 exports.validateLogin = async (req, res) => {
   const { UserID, UserPassword, UserRole, RoomID } = req.body;
