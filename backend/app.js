@@ -19,6 +19,8 @@ app.use(cors({
     credentials: true,
     headers:{
         'Access-Control-Allow-Origin':[appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
+        'Content-Type':'application/json',
+
     }
 }));
 
@@ -45,6 +47,7 @@ const io = socketIO(server, {
         credentials:true,
         headers:{
             'Access-Control-Allow-Origin':[appConfig.FRONTEND_LINK,appConfig.FRONTEND_LINK+'/'],
+            'Content-Type':'application/json',
         }
     },
 });
