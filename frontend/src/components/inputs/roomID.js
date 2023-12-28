@@ -31,7 +31,7 @@ const RoomID=forwardRef(({userRole,roomID,handleRoomIDChange,setRole},roomButton
                             type="text"
                             autoComplete="off"
                             required
-                            maxLength={8}
+                            maxLength={16}
                             value={userRole==="creator"?"N/A":roomID}
                             onChange={handleRoomIDChange}
                             disabled={userRole==="creator"}
