@@ -1,6 +1,6 @@
-import {Children, React} from "react"
-
-export default function ChatMainContainer({children,width,height,padding,borderRadius,borderWidth,boxShadow}){
+import {React, useEffect} from "react"
+export default function ChatMainContainer({children,size}){
+    const {width,height,padding,borderRadius,borderWidth,boxShadow}=size;
     return (
         <>
             <div  id="mainContainer" style={{

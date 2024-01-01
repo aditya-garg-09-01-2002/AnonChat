@@ -1,7 +1,8 @@
 import {React, useEffect,useRef} from "react"
 import ChatBubble from "./chatBubble"
 
-export default function ChatContainer({chats,lineHeight,height,margin}){
+export default function ChatContainer({chats,size}){
+    const {lineHeight,height,margin}=size;
     const chatContainerRef=useRef(null);
     useEffect(()=>{
         chatContainerRef.current.scrollTo({

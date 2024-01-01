@@ -1,7 +1,7 @@
 import {React, useEffect} from "react";
 
-export default function ChatHeader({children,lineHeight,height,padding,borderRadius,borderWidth}){
-    // useEffect(()=>{console.log(message)},[])
+export default function ChatHeader({children,size}){
+    const {lineHeight,height,padding,borderRadius,borderWidth}=size;
     return(
         <>
             <div  style={{

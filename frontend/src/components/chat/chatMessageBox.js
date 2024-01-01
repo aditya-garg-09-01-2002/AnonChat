@@ -2,7 +2,8 @@ import {React,useState,useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-export default function ChatMessageBox({getMessage,buttonPadding,borderRadius,borderWidth,marginBottom,height,lineHeight}){
+export default function ChatMessageBox({getMessage,size}){
+    const {buttonPadding,borderRadius,borderWidth,marginBottom,height,lineHeight}=size
     const [sendHover,setSendHover]=useState(false);
     const inputRef=useRef(null)
     return (
