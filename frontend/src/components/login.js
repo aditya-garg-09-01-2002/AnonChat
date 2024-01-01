@@ -35,8 +35,6 @@ export default function Login() {
   const [modalProps,setShowModal]=useState({modalOpen:false,modalMessage:"",modalButtons:[{name:"",color:"",link:""}],clearFields:clearFields,onOTP:false,modalStatus:""})
   
   useEffect(()=>{
-    // if(userRole==="creator")
-    //   roomButtonRef.current.style.width=roomButtonRef.current.offsetWidth+"px";
     (async()=>{
       try{
         const response=await fetch(process.env.REACT_APP_BACKEND_LINK+'log',{
@@ -54,6 +52,7 @@ export default function Login() {
         navigate('/')
       }
     })()
+    setOpenModal(false);
   },[])
   
   const handleSubmit = async (e) => {
