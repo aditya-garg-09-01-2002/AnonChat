@@ -169,7 +169,7 @@ export default function Home(){
             },
             chatHeader:{
                 ...prevStyles.chatHeader,
-                height:isMobile&&!isPortrait?"calc( 3em + 10px)":"calc(4.5em + 10px)",
+                height:isMobile&&!isPortrait?"calc(3em + 10px)":"calc(4.5em + 10px)",
                 borderWidth:isMobile&&isPortrait?"0":"2px",
                 borderRadius:isMobile&&isPortrait?"0px":"8px",
             },
