@@ -165,7 +165,7 @@ export default function Forgot() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not Joined Yet?{' '}
-            <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <Link to="/signup" className="font-semibold leading-6 text-gray-800 hover:text-gray-600">
               Sign Up
             </Link>
           </p>

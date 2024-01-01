@@ -1,13 +1,11 @@
 import React,{forwardRef} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowTurnUp } from '@fortawesome/free-solid-svg-icons';
 
 const RoomID=forwardRef(({userRole,roomID,handleRoomIDChange,setRole},roomButtonRef)=>{
     return(
         <>
             <div>
                 <div className="flex items-center justify-between">
-                    <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    <button className="flex w-full justify-center rounded-md bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
                     ref={roomButtonRef}
                     onClick={(e)=>{
                         e.preventDefault()
