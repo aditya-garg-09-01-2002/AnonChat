@@ -164,6 +164,7 @@ export default function Home(){
                 width:isMobile&&isPortrait?"100vw":"60vw",
                 borderWidth:isMobile&&isPortrait?"0px":"1px",
                 padding:isMobile&&isPortrait?"0px":"10px",
+                borderRadius:isMobile&&isPortrait?"0px":"8px",
                 boxShadow:isMobile&&isPortrait?"":{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"},
             },
             chatHeader:{
