@@ -40,6 +40,7 @@ exports.sendOTP=async (req,res)=>{
         }
         catch(error)
         {
+          console.log(error.message);
           res.status(500).json({'status':'error','message':'Failed to send OTP'});
         }
     }
