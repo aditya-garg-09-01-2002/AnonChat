@@ -50,7 +50,11 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
     }
     else if(button.link==="_suggestions_")
         window.location.href="https://adityagarg9102.netlify.app/#formContainer"
-    else navigate(button.link,{relative:"path"})
+    else 
+    {
+      navigate(button.link,{relative:"path"})
+      setOpenModal(false)
+    }
   }
   function icon(){
     switch(currentStatus)
