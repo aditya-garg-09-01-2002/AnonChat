@@ -4,7 +4,7 @@ const jwtConfig=require('../config/jwt')
 exports.authenticate=async (req,res,next)=>{
     const encoded_jwtToken=req.cookies[jwtConfig.JWT_COOKIE_NAME];
     if(!encoded_jwtToken)
-        res.status(404).json({message:"Authentication Failure\nKindly Move to Login",logged:false});
+        res.status(404).json({message:"Authentication Failure",logged:false});
     else
         next();
 }
