@@ -15,7 +15,7 @@ export default function NameInput({userName,registrationButton,handleNameChange}
                             name="name"
                             type="text"
                             autoComplete="name"
-                            pattern="[a-z A-Z]{-50}"
+                            pattern="[a-z A-Z]{50}"
                             maxLength={50}
                             required
                             value={userName}
