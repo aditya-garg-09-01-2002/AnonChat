@@ -52,7 +52,6 @@ export default function Login() {
         navigate('/')
       }
     })()
-    setOpenModal(false);
   },[])
   
   const handleSubmit = async (e) => {
