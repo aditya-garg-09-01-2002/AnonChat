@@ -8,7 +8,7 @@ export default function ChatHeader({children,size}){
                 width:'100%',
                 lineHeight:lineHeight,
                 height:height,
-                backgroundColor:'rgba(0,0,0,0.4)',
+                backgroundColor:'rgba(0,0,0,0.5)',
                 textAlign:"left",
                 boxSizing:"border-box",
                 padding:padding,

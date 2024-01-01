@@ -6,6 +6,7 @@ export default function ChatMainContainer({children,size}){
             <div  id="mainContainer" style={{
                 display:"flex",
                 justifyContent:"flex-end",
+                backgroundColor:"rgba(0,0,0,0.2)",
                 width:width,
                 height:height,
                 // margin:"0px auto",
