@@ -24,8 +24,7 @@ const RoomID=forwardRef(({userRole,roomID,handleRoomIDChange,setRole},roomButton
                                 name="roomid"
                                 type="text"
                                 autoComplete="off"
-                                pattern=""
-                                required="[0-9]{16}"
+                                required
                                 maxLength={16}
                                 value={roomID}
                                 onChange={handleRoomIDChange}
