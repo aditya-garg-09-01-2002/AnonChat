@@ -38,6 +38,7 @@ export default function MessagePop({isOpen,message,buttons,clearFields,OTPPage,s
             navigate('/',{relative:"path"})
           }                 
           else throw new Error(data.message)
+          setOpenModal(false);
         }
         catch(error)
         {
