@@ -126,7 +126,16 @@ export default function Login() {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <AuthenticationHeader/>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form 
+            className="space-y-6" 
+            onSubmit={handleSubmit} 
+            onKeyUp={(e)=>{
+              if(e.key==='Enter')
+              {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}>
             <EmailInput userID={userID} registrationButton={0} handleEmailChange={handleEmailChange}/>
             <PasswordInput userPassword={userPassword} registrationButton={0} handlePasswordChange={handlePasswordChange} title={"Password"} forgotRequired={true}/>
             <RoomID userRole={userRole} roomID={roomID} handleRoomIDChange={handleRoomIDChange} ref={roomButtonRef} setRole={setRole}/>
