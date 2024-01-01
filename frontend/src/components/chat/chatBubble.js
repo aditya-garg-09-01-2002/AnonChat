@@ -17,7 +17,7 @@ export default function Bubble({message,sent,first,time}){
                 style={{
                     marginTop:first?"auto":"",
                     marginBottom:"10px",
-                    marginRight:sent?"10px":"auto",
+                    marginRight:sent?"0px":"auto",
                     marginLeft:sent?"auto":"0",
                     backgroundColor:"white",
                     padding:"4px 10px",
