@@ -5,6 +5,7 @@ import {ChatMessageBox,ChatHeader,ChatContainer} from "./chat";
 import ChatMainContainer from "./chat/chatMainContainer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useMediaQuery } from "react-responsive";
 import io from "socket.io-client"
 
 
@@ -64,9 +65,9 @@ export default function Home(){
             setShowModal({modalOpen:true,modalMessage:"Fatal Authorization Error",modalButtons:[{name:"Try Logging in Again",color:"failure",link:"_logout_"}],modalStatus:"sad"});
         })
         socketRef.current.on('receive-message',(received)=>
-            {
-                setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:curTime()}])
-            }
+        {
+            setChat((prevChats)=>[...prevChats,{message:received.message,sent:false,time:curTime()}])
+        }
         )
         socketRef.current.on('session-expired',()=>{
             setShowModal({modalOpen:true,modalMessage:"Fatal Authorization Error",modalButtons:[{name:"Try Logging in Again",color:"failure",link:"_logout_"}],modalStatus:"sad"});
@@ -107,14 +108,90 @@ export default function Home(){
         }
     }
     const [logoutHover,setLogoutHover]=useState(false)
+    const [chatCompStyles,setStyles]=useState({
+        logoutButton:{
+            position:"absolute",
+            top:"20px",
+            right:"20px",
+            color:"black",
+            transform:"scale(2)",
+            filter:(logoutHover?"drop-shadow(1px 1px 2px rgba(0,0,0,0.9))":""),
+        },
+        mainContainer:{
+            width:"60%",
+            height:"80vh",
+            padding:"10px",
+            borderRadius:"8px",
+            borderWidth:"1px",
+            boxShadow:{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"},
+        },
+        chatHeader:{
+            lineHeight:"1.5",
+            height:"calc(4.5em + 10px)",
+            padding:"5px",
+            borderRadius:"8px",
+            borderWidth:"2px",
+        },
+        chatContainer:{
+            lineHeight:"1.5",
+            height:'calc(80dvh - 4.5em - 10px - 3em - 4px)',
+            margin:"5px 0px", 
+        },
+        chatMessageBox:{
+            buttonPadding:"0px 50px", 
+            borderRadius:"8px", 
+            borderWidth:"2px", 
+            marginBottom:"10px", 
+            height:"3em", 
+            lineHeight:"1.5",
+        }
+    })
+    const isMobile = useMediaQuery({maxWidth:768});
+    const isTablet = useMediaQuery({maxWidth:1224});
+    const isPortrait = useMediaQuery({orientation:"portrait"})
+    useEffect(()=>{
+        setStyles((prevStyles)=>({
+            ...prevStyles,
+            logoutButton:{
+                ...prevStyles.logoutButton,
+                transform:isMobile&&isPortrait?"scale(1)":"scale(2)",
+                top:isMobile&&isPortrait?"10px":"20px",
+                right:isMobile&&isPortrait?"5px":"20px",
+            },
+            mainContainer:{
+                ...prevStyles.mainContainer,
+                height:isMobile&&isPortrait?"100dvh":"80vh",
+                width:isMobile&&isPortrait?"100vw":"60vw",
+                borderWidth:isMobile&&isPortrait?"0px":"1px",
+                padding:isMobile&&isPortrait?"0px":"10px",
+                boxShadow:isMobile&&isPortrait?"":{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"},
+            },
+            chatHeader:{
+                ...prevStyles.chatHeader,
+                borderWidth:isMobile&&isPortrait?"0":"2px",
+                borderRadius:isMobile&&isPortrait?"0px":"8px",
+            },
+            chatMessageBox:{
+                ...prevStyles.chatMessageBox,
+                buttonPadding:isMobile&&isPortrait?"0px 30px":"0px 50px", 
+                marginBottom:isMobile&&isPortrait?"5px":"10px", 
+            },
+            chatContainer:{
+                ...prevStyles.chatContainer,
+                height:isMobile&&isPortrait?'calc(100dvh - 4.5em - 10px - 3em - 4px)':'calc(80dvh - 4.5em - 10px - 3em - 4px)',
+                padding:isMobile&&isPortrait?"0px 5px":"",
+            }
+            
+        }))
+    },[isMobile,isPortrait,isTablet])
     return (
     <>
         {
             loading?    
-                <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>:
+            <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>:
                 authorized?
-                    <div style={{
-                        height:"100vh",
+                <div style={{
+                        height:"100dvh",
                         width:"100vw",
                         display:"flex",
                         alignItems:"center",
@@ -123,26 +200,19 @@ export default function Home(){
                         <FontAwesomeIcon 
                             icon={faSignOutAlt}
                             size="2xl"
-                            style={{
-                                position:"absolute",
-                                top:"20px",
-                                right:"20px",
-                                color:"black",
-                                transform:"scale(2)",
-                                filter:(logoutHover?"drop-shadow(1px 1px 2px rgba(0,0,0,0.9))":""),
-                            }}
+                            style={chatCompStyles.logoutButton}
                             onClick={logout}
                             onMouseEnter={()=>{setLogoutHover(true)}}
                             onMouseLeave={()=>{setLogoutHover(false)}}
                         />
-                        <ChatMainContainer width="60%" height="80vh" padding="10px" borderRadius="8px" borderWidth="1px" boxShadow={{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"}}>
-                            <ChatHeader lineHeight="1.5" height="calc(4.5em + 10px)" padding="5px" borderRadius="8px" borderWidth="2px">
+                        <ChatMainContainer size={chatCompStyles.mainContainer}>
+                            <ChatHeader size={chatCompStyles.chatHeader}>
                                 Hi! {user.name},<br />
                                 Welcome To Anon Chat<br />
                                 {user.message}
                             </ChatHeader>
-                            <ChatContainer lineHeight="1.5" height='calc(80vh - 4.5em - 10px - 3em - 4px)' margin="5px 0px" chats={chats}/>
-                            <ChatMessageBox getMessage={handleInputMessage} buttonPadding="0px 50px" borderRadius="8px" borderWidth="2px" marginBottom="10px" height="3em" lineHeight="1.5"/>
+                            <ChatContainer size={chatCompStyles.chatContainer} chats={chats}/>
+                            <ChatMessageBox getMessage={handleInputMessage} size={chatCompStyles.chatMessageBox}/>
                         </ChatMainContainer>
                     </div>:
                     <MessagePop message={modalProps.modalMessage} isOpen={modalProps.modalOpen} buttons={modalProps.modalButtons} status={modalProps.modalStatus}/>
