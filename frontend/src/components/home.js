@@ -154,32 +154,33 @@ export default function Home(){
             ...prevStyles,
             logoutButton:{
                 ...prevStyles.logoutButton,
-                transform:isMobile&&isPortrait?"scale(1)":"scale(2)",
-                top:isMobile&&isPortrait?"10px":"20px",
-                right:isMobile&&isPortrait?"5px":"20px",
+                transform:isMobile?"scale(0.9)":"scale(2)",
+                top:isMobile?isPortrait?"10px":"10px":"20px",
+                right:isMobile?isPortrait?"5px":"10px":"20px",
             },
             mainContainer:{
                 ...prevStyles.mainContainer,
-                height:isMobile&&isPortrait?"100dvh":"80vh",
-                width:isMobile&&isPortrait?"100vw":"60vw",
-                borderWidth:isMobile&&isPortrait?"0px":"1px",
-                padding:isMobile&&isPortrait?"0px":"10px",
-                borderRadius:isMobile&&isPortrait?"0px":"8px",
-                boxShadow:isMobile&&isPortrait?"":{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"},
+                height:isMobile?"100dvh":"80vh",
+                width:isMobile?"100vw":"60vw",
+                borderWidth:isMobile?"0px":"1px",
+                padding:isMobile?isPortrait?"0px":"5px":"10px",
+                borderRadius:isMobile?"0px":"8px",
+                boxShadow:isMobile?"":{x:"10px",y:"10px", b:"10px", s:"1px",color:"black"},
             },
             chatHeader:{
                 ...prevStyles.chatHeader,
+                height:"calc( 3em + 10px)",
                 borderWidth:isMobile&&isPortrait?"0":"2px",
                 borderRadius:isMobile&&isPortrait?"0px":"8px",
             },
             chatMessageBox:{
                 ...prevStyles.chatMessageBox,
                 buttonPadding:isMobile&&isPortrait?"0px 30px":"0px 50px", 
-                marginBottom:isMobile&&isPortrait?"5px":"10px", 
+                marginBottom:isMobile?isPortrait?"5px":"0px":"10px", 
             },
             chatContainer:{
                 ...prevStyles.chatContainer,
-                height:isMobile&&isPortrait?'calc(100dvh - 4.5em - 10px - 3em - 4px)':'calc(80dvh - 4.5em - 10px - 3em - 4px)',
+                height:isMobile?isPortrait?'calc(100dvh - 4.5em - 10px - 3em - 4px)':'calc(100dvh - 3em - 10px - 3em - 5px)':'calc(80dvh - 4.5em - 10px - 3em - 4px)',
                 padding:isMobile&&isPortrait?"0px 5px":"",
             }
             
@@ -208,7 +209,7 @@ export default function Home(){
                         />
                         <ChatMainContainer size={chatCompStyles.mainContainer}>
                             <ChatHeader size={chatCompStyles.chatHeader}>
-                                Hi! {user.name},<br />
+                                Hi! {user.name},{isMobile&&!isPortrait?" ":<br />}
                                 Welcome To Anon Chat<br />
                                 {user.message}
                             </ChatHeader>
