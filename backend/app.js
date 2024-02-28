@@ -11,6 +11,7 @@ const cookieParser=require('cookie-parser');
 const socketIO=require('socket.io');
 const {getJWT,parseCookies}=require('./utils/jwtUtils')
 const {getSize}=require('./utils/chatUtils')
+const cron = require('node-cron');
 
 
 
@@ -37,6 +38,10 @@ const PORT = process.env.PORT || 9000;
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+});
+
+cron.schedule('*/10 * * * *', () => {
+  console.log('This task runs every 15 minutes as Cron-Job');
 });
 
 const io = socketIO(server, {
