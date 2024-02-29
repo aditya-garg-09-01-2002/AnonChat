@@ -40,8 +40,8 @@ const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-cron.schedule('*/10 * * * *', () => {
-  console.log('This task runs every 15 minutes as Cron-Job');
+cron.schedule('*/1 * * * *', () => {
+  console.log('This task runs every 1 minutes as Cron-Job');
 });
 
 const io = socketIO(server, {
